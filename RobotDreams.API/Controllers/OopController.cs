@@ -34,7 +34,7 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("oop3")]
+        [Route("oop4")]
         public IActionResult Oop3(int enginePower)
         {
             Ferrari ferrariObject = new();
