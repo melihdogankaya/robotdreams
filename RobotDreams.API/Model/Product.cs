@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public double Price { get; set; }
 
-        public double AddKdv()
+        public virtual double AddKdv()
         {
             return Price * 1.18;
         }

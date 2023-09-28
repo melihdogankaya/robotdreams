@@ -2,13 +2,15 @@
 {
     public class Basket
     {
-        private List<Product> products = new();
+        public List<Product> Products = new();
+
+        public double _TotalPrice { get; set; }
 
         public double TotalPrice()
         {
             double totalPrice = 0;
 
-            foreach (Product product in products)
+            foreach (Product product in Products)
             {
                 totalPrice += product.AddKdv();
             }
@@ -18,7 +20,7 @@
 
         public void Add(Product product)
         {
-            products.Add(product);
+            Products.Add(product);
         }
     }
 }

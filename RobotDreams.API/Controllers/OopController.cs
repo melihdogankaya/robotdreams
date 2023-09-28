@@ -47,5 +47,24 @@ namespace RobotDreams.API.Controllers
 
             return Ok(ferrariSerialized);
         }
+
+        [HttpGet]
+        [Route("polymorphism")]
+        public IActionResult Polymorphism()
+        {
+            Basket _basket = new();
+
+            Bread _bread = new("Uno", 35, "Tam Buğday", 500);
+            MobilePhone _mobilePhone = new("iPhone", 50000, "Apple");
+
+            _basket.Add(_bread);
+            _basket.Add(_mobilePhone);
+
+            _basket._TotalPrice = _basket.TotalPrice();
+
+            string basketSerialized = JsonConvert.SerializeObject(_basket);
+
+            return Ok(basketSerialized);
+        }
     }
 }
