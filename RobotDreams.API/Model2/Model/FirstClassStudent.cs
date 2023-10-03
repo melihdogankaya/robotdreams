@@ -1,4 +1,4 @@
-﻿namespace RobotDreams.API.Model2
+﻿namespace RobotDreams.API.Model2.Model
 {
     public class FirstClassStudent : Student
     {

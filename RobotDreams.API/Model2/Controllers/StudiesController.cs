@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RobotDreams.API.Model2;
+using RobotDreams.API.Model2.Model;
 
-namespace RobotDreams.API.Controllers
+namespace RobotDreams.API.Model2.NewFolder
 {
     [Route("api/[controller]")]
     [ApiController]

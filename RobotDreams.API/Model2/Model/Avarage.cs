@@ -1,6 +1,6 @@
 ﻿using RobotDreams.API.Model;
 
-namespace RobotDreams.API.Model2
+namespace RobotDreams.API.Model2.Model
 {
     public class Avarage
     {
@@ -17,13 +17,13 @@ namespace RobotDreams.API.Model2
             decimal _SchoolAvarage = 0;
             foreach (Student student in Students)
             {
-                _SchoolAvarage += student.CalculateAverage() ;
-                
+                _SchoolAvarage += student.CalculateAverage();
+
 
 
             }
             _SchoolAvarage = _SchoolAvarage / Students.Count;
-            
+
             return _SchoolAvarage;
         }
 
