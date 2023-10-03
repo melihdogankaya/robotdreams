@@ -22,9 +22,9 @@ namespace RobotDreams.API.Model2.Model
 
 
             }
-            decimal _SchoolAvarage2 = _SchoolAvarage / Students.Count;
+            _SchoolAvarage = _SchoolAvarage / Students.Count;
 
-            return _SchoolAvarage2;
+            return _SchoolAvarage;
         }
 
 
