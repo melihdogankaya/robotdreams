@@ -9,13 +9,5 @@
         {
             return Price * 1.18;
         }
-
-
-
-        public Product(string name, double price)
-        {
-            Name = name;
-            Price = price;
-        }
     }
 }

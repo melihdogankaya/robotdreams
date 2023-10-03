@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RobotDreams.API.Model2.Model;
 
@@ -26,9 +25,6 @@ namespace RobotDreams.API.Model2.NewFolder
             string _avarageSerialized = JsonConvert.SerializeObject(_avarage);
 
             return Ok(_avarageSerialized);
-
-
-
         }
 
     }

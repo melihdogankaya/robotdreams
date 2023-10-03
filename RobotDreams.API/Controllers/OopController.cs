@@ -68,7 +68,5 @@ namespace RobotDreams.API.Controllers
 
             return Ok(basketSerialized);
         }
-
-
     }
 }
