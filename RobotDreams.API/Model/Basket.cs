@@ -1,6 +1,6 @@
 ﻿namespace RobotDreams.API.Model
 {
-    public class Basket
+    public class Basket : Product
     {
         public List<Product> Products = new();
 
@@ -13,6 +13,7 @@
             foreach (Product product in Products)
             {
                 totalPrice += product.AddKdv();
+                Balance = product.Balance - totalPrice;
             }
             
             return totalPrice;

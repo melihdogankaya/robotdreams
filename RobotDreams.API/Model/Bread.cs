@@ -10,8 +10,9 @@
             return Price * 1.01;
         }
 
-        public Bread(string name, double price, string type, int basisWeight) 
-        { 
+        public Bread(string name, double price, string type, int basisWeight, double balance) 
+        {
+            Balance = balance;
             Name = name;
             Price = price;
             Type = type;

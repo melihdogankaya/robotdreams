@@ -53,13 +53,20 @@ namespace RobotDreams.API.Controllers
         public IActionResult Polymorphism()
         {
             Basket _basket = new();
-            
 
-            Bread _bread = new("Uno", 35, "Tam Buğday", 500);
-            MobilePhone _mobilePhone = new("iPhone", 50000, "Apple");
+            Product _balance = new();
+            _balance.Balance = 150000;
+
+
+            Bread _bread = new("Uno", 35, "Tam Buğday", 500,_balance.Balance);
+            MobilePhone _mobilePhone = new("iPhone", 50000, "Apple", _balance.Balance);
+
+            Delicatessen _icecekler = new("Johnny walker", "Alkol", 1000, "Whisky", 25000, _balance.Balance);
 
             _basket.Add(_bread);
             _basket.Add(_mobilePhone);
+            _basket.Add(_icecekler);
+
 
             _basket._TotalPrice = _basket.TotalPrice();
 
@@ -67,5 +74,7 @@ namespace RobotDreams.API.Controllers
 
             return Ok(basketSerialized);
         }
+
+        
     }
 }
