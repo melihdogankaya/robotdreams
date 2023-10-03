@@ -18,9 +18,12 @@ namespace RobotDreams.API.Model2
             foreach (Student student in Students)
             {
                 _SchoolAvarage += student.CalculateAverage() ;
-                _SchoolAvarage = _SchoolAvarage / Students.Count;
+                
+
 
             }
+            _SchoolAvarage = _SchoolAvarage / Students.Count;
+            
             return _SchoolAvarage;
         }
 

@@ -19,7 +19,7 @@
         public override decimal CalculateAverage()
         {
             decimal avarage = 0;
-            avarage = ((LanguageFirstExam + LanguageLastExam) * 3 + (MathFirstExam + MathLastExam) * 2) / 5;
+            avarage = (LanguageFirstExam + LanguageLastExam + MathFirstExam + MathLastExam) / 4;
             return avarage;
         }
 
