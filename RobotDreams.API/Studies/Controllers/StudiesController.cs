@@ -10,8 +10,8 @@ namespace RobotDreams.API.Model2.NewFolder
     public class StudiesController : ControllerBase
     {
         [HttpGet]
-        [Route("polymorphism")]
-        public IActionResult polymorphism2() // birinci sinif ogrencileri icin sadece dil sinav ortalamasi, ikinci sinif ogrencileri icinse hem dil hemde matematik ortalamasini alip, okul ortalamasi hesaplayan controller. 
+        [Route("Polymorphism")]
+        public IActionResult polymorphism2() // birinci sinif ogrencileri icin sadece dil sinav ortalamasi, ikinci sinif ogrencileri icinse hem dil hemde matematik ortalamasini alip, okul ortalamasi hesaplayan controller(sacma sapan bisey). 
         {
             Avarage _avarage = new();
 
@@ -23,9 +23,9 @@ namespace RobotDreams.API.Model2.NewFolder
 
             _avarage._Avarage = _avarage.SchoolAvarage();
 
-            string AvarageSerialized = JsonConvert.SerializeObject(_avarage);
+            string _avarageSerialized = JsonConvert.SerializeObject(_avarage);
 
-            return Ok(AvarageSerialized);
+            return Ok(_avarageSerialized);
 
 
 
