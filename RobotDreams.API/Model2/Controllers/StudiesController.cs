@@ -11,7 +11,7 @@ namespace RobotDreams.API.Model2.NewFolder
     {
         [HttpGet]
         [Route("polymorphism")]
-        public IActionResult polymorphism2()
+        public IActionResult polymorphism2() // birinci sinif ogrencileri icin sadece dil sinav ortalamasi, ikinci sinif ogrencileri icinse hem dil hemde matematik ortalamasini alip, okul ortalamasi hesaplayan controller. 
         {
             Avarage avarage = new();
 
