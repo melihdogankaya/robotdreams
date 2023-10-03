@@ -71,7 +71,7 @@ namespace RobotDreams.API.Controllers
 
         [HttpGet]
         [Route("polymorphism deneme")]
-        public IActionResult polymorphism()
+        public IActionResult polymorphism2()
         {
             Avarage avarage = new();
 
