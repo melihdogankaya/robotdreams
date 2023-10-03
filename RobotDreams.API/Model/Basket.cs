@@ -18,9 +18,6 @@
             return totalPrice;
         }
 
-        public void Add(Product product)
-        {
-            Products.Add(product);
-        }
+        
     }
 }
