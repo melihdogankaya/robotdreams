@@ -17,12 +17,11 @@ namespace RobotDreams.API.Model2.NewFolder
 
             FirstClassStudent _FirstClassStudent = new("Onur", "Demir", 101, 45, 87);
             SecondClassStudent _SecondClassStudent = new("Ayse", "Aslan", 245, 80, 90, 60, 70);
-
+                    
             _avarage.Add(_FirstClassStudent);
             _avarage.Add(_SecondClassStudent);
 
             _avarage._Avarage = _avarage.SchoolAvarage();
-
 
             string AvarageSerialized = JsonConvert.SerializeObject(_avarage);
 
