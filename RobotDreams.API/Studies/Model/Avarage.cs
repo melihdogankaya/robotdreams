@@ -22,7 +22,7 @@ namespace RobotDreams.API.Model2.Model
 
 
             }
-            _SchoolAvarage = _SchoolAvarage / Students.Count;
+            _SchoolAvarage /= Students.Count;
 
             return _SchoolAvarage;
         }
