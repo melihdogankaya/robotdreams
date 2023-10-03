@@ -5,9 +5,9 @@
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Age { get; set; }
+      
         public int IDNumber { get; set; }
-        public string Gender { get; set; }
+        
 
         public int LanguageFirstExam { get; set; }
         public int LanguageLastExam { get; set; }

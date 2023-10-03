@@ -6,7 +6,7 @@ namespace RobotDreams.API.Model2.Model
     {
         public decimal _Avarage { get; set; }
 
-        List<Student> Students = new();
+        public List<Student> Students = new();
 
         public void Add(Student student)
         {
