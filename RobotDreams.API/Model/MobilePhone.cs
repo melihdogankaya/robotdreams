@@ -4,12 +4,14 @@
     {
         public string Specifications { get; set; }
         public string Brand { get; set; }
-
-        public MobilePhone(string name, double price, string brand) 
+       // public double VatRate {  get; set; }
+        public MobilePhone(string name, double price,double vatrate, string brand) 
         { 
             Name = name;
             Price = price;
+            VatRate = vatrate;
             Brand = brand;
+           
         }
     }
 }

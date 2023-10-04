@@ -20,11 +20,11 @@ namespace RobotDreams.API.Controllers
             Musician drummer = new() { Name = "Lars", Surname = "Ulrich", Instrument = drum, HowToPlay = drum.Play() };
             Musician pianist = new() { Name = "Lang", Surname = "Lang", Instrument = piano, HowToPlay = piano.Play() };
 
-            string serializedGuitarist = JsonConvert.SerializeObject(guitarist);
+            string serializedGuitarist = JsonConvert.SerializeObject(guitarist);// + "," + JsonConvert.SerializeObject(drummer) + "," + JsonConvert.SerializeObject(pianist);
             string serializedDrummer = JsonConvert.SerializeObject(drummer);
             string serializedPianist = JsonConvert.SerializeObject(pianist);
 
-            string result = serializedDrummer + serializedPianist + serializedGuitarist;
+           string result = serializedDrummer + serializedPianist + serializedGuitarist;
 
             return Ok(result);
         }

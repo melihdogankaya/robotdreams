@@ -4,7 +4,7 @@
     {
         public void Example()
         {
-            CalculateSalary(1,1);
+            CalculateSalary(10,85);
         }
     }
 }
