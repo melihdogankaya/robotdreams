@@ -60,8 +60,6 @@ namespace RobotDreams.API.Controllers
 
             _basket.Add(_bread);
             _basket.Add(_mobilePhone);
-            _basket.Add(_icecekler);
-
 
             _basket._TotalPrice = _basket.TotalPrice();
 
