@@ -54,14 +54,10 @@ namespace RobotDreams.API.Controllers
         {
             Basket _basket = new();
 
-            Product _balance = new();
-            _balance.Balance = 150000;
+         
 
-
-            Bread _bread = new("Uno", 35, "Tam Buğday", 500,_balance.Balance);
-            MobilePhone _mobilePhone = new("iPhone", 50000, "Apple", _balance.Balance);
-
-            Delicatessen _icecekler = new("Johnny walker", "Alkol", 1000, "Whisky", 25000, _balance.Balance);
+            Bread _bread = new("Uno", 35, "Tam Buğday", 500);
+            MobilePhone _mobilePhone = new("iPhone", 50000, "Apple");
 
             _basket.Add(_bread);
             _basket.Add(_mobilePhone);
