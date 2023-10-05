@@ -2,7 +2,7 @@
 
 namespace RobotDreams.API.Model
 {
-    public class Delicatessen: Product
+    public class Delicatessen: Product 
     {
         public string Type { get; set; }
         public int HacimMl { get; set; }
