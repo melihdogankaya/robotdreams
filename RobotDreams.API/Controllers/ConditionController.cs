@@ -32,11 +32,30 @@ namespace RobotDreams.API.Controllers
         {
             //switch (switch_on)
             //{
-            //   case kontrol1:
-            //          işlemler1;
-            //          break;
-            //     default
-            //     break;     
+            //    case kontrol1:
+            //         işlemler1;
+            //         break;
+            //    default:
+            //    break;
+            //}
+
+            //switch (teamCode)
+            //{
+            //    case "bjk":
+            //        result = "Beşiktaş";
+            //        break;
+            //    case "fb":
+            //        result = "Fenerbahçe";
+            //        break;
+            //    case "gs":
+            //        result = "Galatasaray";
+            //        break;
+            //    case "ts":
+            //        result = "Trabzonspor";
+            //        break;
+            //    default:
+            //        result = "Hiçbir değer geçerli değil.";
+            //        break;
             //}
 
             string result = teamCode switch
