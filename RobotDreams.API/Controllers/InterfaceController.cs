@@ -13,13 +13,5 @@ namespace RobotDreams.API.Controllers
             Player player = new() { Name = "BattalGazi", Age = 30, LifeBar = 100, Weapon = new M51() };
             return Ok(player.TakeAim());
         }
-
-        [HttpGet]
-        [Route("Generic")]
-
-        public IActionResult Genericexample2()
-        {
-           
-        }
     }
 }
