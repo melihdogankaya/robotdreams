@@ -17,18 +17,9 @@ namespace RobotDreams.API.Controllers
         [HttpGet]
         [Route("Generic")]
 
-        public IActionResult Genericexample2(string teamCode)
+        public IActionResult Genericexample2()
         {
-            try
-            {
-                GenericClass<int> genericClass = new();
-                int result = genericClass.ProcessData(teamCode);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+           
         }
     }
 }
