@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using RobotDreams.API.Model.Abstract;
 
 namespace RobotDreams.API.Controllers
 {
-    public class AbstractController : Controller
     {
-        public IActionResult Index()
         {
-            return View();
         }
     }
 }

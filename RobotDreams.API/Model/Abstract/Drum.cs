@@ -4,7 +4,6 @@
     {
         public override string Play()
         {
-            return "Play with sticks.";
         }
     }
 }
