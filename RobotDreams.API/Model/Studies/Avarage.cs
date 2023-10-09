@@ -1,13 +1,9 @@
-﻿using RobotDreams.API.Model;
-
-namespace RobotDreams.API.Model2.Model
+﻿namespace RobotDreams.API.Model.Studies
 {
     public class Avarage
     {
         public decimal _Avarage { get; set; }
-
         public List<Student> Students = new();
-
         public void Add(Student student)
         {
             Students.Add(student);
@@ -18,18 +14,8 @@ namespace RobotDreams.API.Model2.Model
             foreach (Student student in Students)
             {
                 _SchoolAvarage += student.CalculateAverage();
-
-
-
             }
-            _SchoolAvarage /= Students.Count;
-
-            return _SchoolAvarage;
+            return _SchoolAvarage /= Students.Count;
         }
-
-
-   
-
-
     }
 }
