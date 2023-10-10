@@ -1,6 +1,6 @@
 ﻿namespace RobotDreams.API.Model.Studies.Abst
 {
-    public class Engineer 
+    public class Engineers 
     {
         public string Name { get; set; }
         public string Surname { get; set; }
