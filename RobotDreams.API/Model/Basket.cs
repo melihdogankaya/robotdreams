@@ -1,6 +1,4 @@
-﻿using RobotDreams.API.Model2;
-
-namespace RobotDreams.API.Model
+﻿namespace RobotDreams.API.Model
 {
     public class Basket
     {
