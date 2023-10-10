@@ -14,6 +14,7 @@ namespace RobotDreams.API.Controllers
         [Route("Polymorphism")]
         public IActionResult Polymorphism() // birinci sinif ogrencileri icin sadece dil sinav ortalamasi, ikinci sinif ogrencileri icinse hem dil hemde matematik ortalamasini alip, okul ortalamasi hesaplayan controller(sacma sapan bisey). 
         {
+
             Avarage _avarage = new();
             FirstClassStudent _FirstClassStudent = new("Onur", "Demir", 101, 45, 87);
             SecondClassStudent _SecondClassStudent = new("Ayse", "Aslan", 245, 80, 90, 60, 70);
@@ -41,8 +42,6 @@ namespace RobotDreams.API.Controllers
             string ArchitectSerialized = JsonConvert.SerializeObject(Architect);
 
             return Ok(MechEngineerSerialized + "\n" + ElecEngineerSerialized + "\n" + ArchitectSerialized);
-        }
-     
-     
+        }    
     }
 }
