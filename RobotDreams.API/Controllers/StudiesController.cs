@@ -28,18 +28,21 @@ namespace RobotDreams.API.Controllers
         [Route("Abstract Class")]
         public IActionResult AbstractClass() //  Muhendisler ve mimarlar beraber bir proje yapmaktadir.
         {
-            Architect architecturalDrawing = new Architect() { System = "Facade", Description = "Cephe cizimleri" };
+            Architect architecturalDrawing = new() { System = "Facade", Description = "Cephe cizimleri" };
             MechanicalEngineer mechanicalDrawing = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
             ElectricalEngineer electricalDrawing = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
-           
-            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", HowToDraw = mechanicalDrawing.Draw() };
-            Engineers ElecEngineer = new() { Name = "Gozde", Surname = "Cetin", HowToDraw =electricalDrawing.Draw() };
-            Engineers Architect = new() { Name = "Metin" , Surname = "Cakmak" , HowToDraw= architecturalDrawing.Draw() };
+
+            Engineers MechEngineer = new() { Name = "Onur", Surname = "Demir", HowToDraw = mechanicalDrawing.Draw() };
+            Engineers ElecEngineer = new() { Name = "Gozde", Surname = "Cetin", HowToDraw = electricalDrawing.Draw() };
+            Engineers Architect = new() { Name = "Metin", Surname = "Cakmak", HowToDraw = architecturalDrawing.Draw() };
+
+            string MechEngineerSerialized = JsonConvert.SerializeObject(MechEngineer);
+            string ElecEngineerSerialized = JsonConvert.SerializeObject(ElecEngineer);
+            string ArchitectSerialized = JsonConvert.SerializeObject(Architect);
 
 
 
-
-            return Ok();
+            return Ok(MechEngineerSerialized + "\n" + ElecEngineerSerialized + "\n" + ArchitectSerialized);
         }
     }
 }
