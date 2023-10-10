@@ -32,8 +32,9 @@ namespace RobotDreams.API.Controllers
             MechanicalEngineer mechanicalDrawing = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
             ElectricalEngineer electricalDrawing = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
            
-            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", };
-
+            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", HowToDraw = mechanicalDrawing.Draw() };
+            Engineers ElecEngineer = new() { Name = "Gozde", Surname = "Cetin", HowToDraw =electricalDrawing.Draw() };
+            Engineers Architect = new() { Name = "Metin" , Surname = "Cakmak" , HowToDraw= architecturalDrawing.Draw() };
 
 
 
