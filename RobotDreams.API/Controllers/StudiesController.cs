@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RobotDreams.API.Model.Studies;
+using RobotDreams.API.Model.Studies.Abst;
+using RobotDreams.API.Model.Studies.Poly;
 
 namespace RobotDreams.API.Controllers
 {
@@ -22,5 +23,15 @@ namespace RobotDreams.API.Controllers
             return Ok(_avarageSerialized);
         }
 
+        [HttpGet]
+        [Route("Polymorphism")]
+        public IActionResult AbstractClass() //  Muhendisler ve mimarlar beraber bir proje yapmaktadir.
+        {
+            Architect architect = new Architect();
+
+
+
+            return Ok();
+        }
     }
 }
