@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RobotDreams.API.Model;
 using RobotDreams.API.Model.Studies.Abst;
-using RobotDreams.API.Model.Studies.Poly;
+
 
 namespace RobotDreams.API.Controllers
 {
@@ -27,9 +28,12 @@ namespace RobotDreams.API.Controllers
         [Route("Abstract Class")]
         public IActionResult AbstractClass() //  Muhendisler ve mimarlar beraber bir proje yapmaktadir.
         {
-            Architect architect = new Architect() { System = "Facade", Description = "Cephe cizimleri" };
-            MechanicalEngineer mechanicalEngineer = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
-            ElectricalEngineer electricalEngineer = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
+            Architect architecturalDrawing = new Architect() { System = "Facade", Description = "Cephe cizimleri" };
+            MechanicalEngineer mechanicalDrawing = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
+            ElectricalEngineer electricalDrawing = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
+           
+            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", Drawing = };
+
 
 
 
