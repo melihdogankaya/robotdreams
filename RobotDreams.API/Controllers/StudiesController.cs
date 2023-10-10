@@ -24,10 +24,13 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("Polymorphism")]
+        [Route("Abstract Class")]
         public IActionResult AbstractClass() //  Muhendisler ve mimarlar beraber bir proje yapmaktadir.
         {
-            Architect architect = new Architect();
+            Architect architect = new Architect() { System = "Facade", Description = "Cephe cizimleri" };
+            MechanicalEngineer mechanicalEngineer = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
+            ElectricalEngineer electricalEngineer = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
+
 
 
 
