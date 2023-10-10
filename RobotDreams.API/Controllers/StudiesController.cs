@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RobotDreams.API.Model;
+using RobotDreams.API.Model.Studies.Poly;
 using RobotDreams.API.Model.Studies.Abst;
 
 
@@ -32,7 +32,7 @@ namespace RobotDreams.API.Controllers
             MechanicalEngineer mechanicalDrawing = new MechanicalEngineer() { System = "HVAC", Description = "Isitma, Sogutma ve Havalandirma cizimleri" };
             ElectricalEngineer electricalDrawing = new ElectricalEngineer() { System = "Electrical Systems", Description = "Zayif akim sistemleri" };
            
-            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", Drawing = };
+            Engineers MechEngineer = new Engineers() { Name = "Onur", Surname = "Demir", };
 
 
 
