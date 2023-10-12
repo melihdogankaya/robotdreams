@@ -40,7 +40,7 @@ namespace RobotDreams.API.Controllers
             {
                 Color = "Red",
                 Brand = "Ferrari"
-            };           
+            };
 
             var g = new Generic<Car>();
             //{//
@@ -78,21 +78,11 @@ namespace RobotDreams.API.Controllers
         [Route("GenericType5")]
         public IActionResult GenericTypeExample5()
         {
-            Generic3<int[]> g3 = new();
-            var list = g3.Data.Where(x => x == null).ToList();
-            return Ok(JsonConvert.SerializeObject(g3));
+            var list = new List<Car>(); //List bir Generic Type tır
+            list.Add(new Car { Brand = "Ferrari", Model = "Enzo", Color = "Kırmızı" });
+            list.Add(new Car {Brand = "Fiat", Model="picap", Color="Mavi", EnginePowerCc = 2500, Hatchback= true });
+            return Ok(JsonConvert.SerializeObject(list));
         }
-
-        [HttpGet]
-        [Route("GenericType6")]
-        public IActionResult GenericTypeExample6()
-        {
-            Model.GenericType.List<Car> a = new();
-
-            return Ok();
-        }
-
-
     }
 }
 
