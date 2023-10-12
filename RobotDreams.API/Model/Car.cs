@@ -10,14 +10,20 @@
 
         public bool IsHatchback(string brand)
         {
+            var a = "aaaaaa";
+            var c = Convert.ToInt32(a);
+
             if (brand == "Ferrari")
             {
                 return false;
             }
             else
             {
+                c = Convert.ToInt32(a);
                 return true;
             }
+           
         }
+        
     }
 }
