@@ -38,7 +38,7 @@ namespace RobotDreams.API.Controllers
         {
             List<int> number = new();
             int i = 0;
-            while (i <100 )
+            while (i < 100)
             {
                 number.Add(i);
                 i++;
@@ -57,13 +57,13 @@ namespace RobotDreams.API.Controllers
             {
                 number.Add(i);
             }
-            
+
             foreach (var i in number)
             {
-                if(i%2 == 0)
-                number2.Add(i);
+                if (i % 2 == 0)
+                    number2.Add(i);
             }
-            
+
             return Ok(number2);
 
         }
@@ -73,7 +73,7 @@ namespace RobotDreams.API.Controllers
         public IActionResult DoWhile()
         {
 
-            List <int> numbers =new();
+            List<int> numbers = new();
             int i = 3;
             do
             {
@@ -81,14 +81,44 @@ namespace RobotDreams.API.Controllers
                 i++;
 
 
-            } while (i<=2);
+            } while (i <= 2);
 
 
 
             return Ok(numbers);
         }
-        
 
+        [HttpGet]
+        [Route("Break")]
+        public IActionResult Break()
+        {
+            List<int> numbers = new();
+            for (int i = 0; i < 10; i++)
+            {
+                if (i == 4)
+                    break;
+                numbers.Add(i);
+            }
+            return Ok(JsonConvert.SerializeObject(numbers));
+        }
 
+        [HttpGet]
+        [Route("Continue")]
+        public IActionResult Continue()
+        {
+            List<int> numbers = new();
+            int i = 3;
+
+            while (i <= 14)
+               
+            {
+                i++;
+                if (i == 10)
+                    continue;
+                numbers.Add(i);
+                
+            }
+            return Ok(JsonConvert.SerializeObject(numbers));
+        }
     }
 }
