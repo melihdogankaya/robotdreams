@@ -5,3 +5,7 @@
 /.vs
 /RobotDreams.API/bin/Debug/net7.0
 /RobotDreams.API/obj
+/RobotDreams.API/Model/Interface/GunfireWeapos.cs
+/RobotDreams.API/Model/Interface/CutterWeapos.cs
+/RobotDreams.API/Model/Interface/M51.cs
+/RobotDreams.API/Model/Interface/Player.cs
