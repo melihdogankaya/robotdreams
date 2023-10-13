@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="Model\Studies\Interface\" />
+    <Folder Include="Model\Studies\Loops\" />
   </ItemGroup>
 
 </Project>
