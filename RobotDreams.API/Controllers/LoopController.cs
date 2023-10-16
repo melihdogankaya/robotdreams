@@ -143,22 +143,21 @@ namespace RobotDreams.API.Controllers
         {
 
             string result;
-            switch (TeamCode)
-            {
-                case "BJK": result = "Besiktas";
-                    break;
-
-                case "GS": result = "Galatasaray";
-                    break;
-                case "FB": result = "Fenerbahce";
-                    break;
-
-                default: result = "Hicbiri degil";
-                    break;
-            }
+            result = NewMethod(TeamCode);
             return Ok(result);
         }
 
+        private static string NewMethod(string TeamCode)
+        {
+            string result = TeamCode switch
+            {
+                "BJK" => "Besiktas",
+                "GS" => "Galatasaray",
+                "FB" => "Fenerbahce",
+                _ => "Hicbiri degil",
+            };
+            return result;
+        }
     }
     
 }
