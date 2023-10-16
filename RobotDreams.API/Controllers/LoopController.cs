@@ -110,15 +110,55 @@ namespace RobotDreams.API.Controllers
             int i = 3;
 
             while (i <= 14)
-               
+
+
             {
                 i++;
                 if (i == 10)
                     continue;
                 numbers.Add(i);
-                
+
             }
             return Ok(JsonConvert.SerializeObject(numbers));
         }
+
+        [HttpGet]
+        [Route("Disardan veri alma- if")]
+        public IActionResult DisaridanVeriAlma(string veri)
+        {
+            string result;
+
+            if (veri.StartsWith("O"))
+                result = "O ile baslamaktadir";
+            else
+            {
+                result = "O ile BASLAMAMAKTADIR";
+            }
+
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("Switch - Case")]
+        public IActionResult SwitchCase(string TeamCode)
+        {
+
+            string result;
+            switch (TeamCode)
+            {
+                case "BJK": result = "Besiktas";
+                    break;
+
+                case "GS": result = "Galatasaray";
+                    break;
+                case "FB": result = "Fenerbahce";
+                    break;
+
+                default: result = "Hicbiri degil";
+                    break;
+            }
+            return Ok(result);
+        }
+
     }
 }
+
