@@ -170,6 +170,33 @@ namespace RobotDreams.API.Controllers
                 return BadRequest(message);
             }
         }
+
+        [HttpGet]
+        [Route("nullexception")]
+        public IActionResult NullException2()
+        {
+            try
+            {
+                //DateTime? d = null;
+                //byte? b = null;
+                //long? l = null;
+                //int? o = null;
+
+                //List<int> v = null;
+
+                //v.Add(1);
+
+                int? input2 = null;
+                input2.ToString();
+                //var c = input2.ToString();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                string exMessage = $"Exception: {ex.Message} StackTrace: {ex.StackTrace}";
+                return BadRequest(exMessage);
+            }         
+        }
     }
 <<<<<<< HEAD
 }
