@@ -91,7 +91,6 @@ namespace RobotDreams.API.Controllers
         public IActionResult ExampleDoWhile()
         {
             int x = 21;
-            int y = 21;
 
             List<int> result = new();
             do
