@@ -14,7 +14,7 @@ using RobotDreams.API.Model.GenericType;
 
 namespace RobotDreams.API.Controllers
 {
-    
+
     public class ExceptionController : Controller
     {
         private ILogger<ExceptionController> _logger;
@@ -24,11 +24,15 @@ namespace RobotDreams.API.Controllers
             _logger = logger;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         [HttpGet]
         [Route("exception1")]
         public IActionResult IndexOutOfRangeException()
 =======
+=======
+
+>>>>>>> mehmetasker
         [HttpGet]
         [Route("Exception")]
         public IActionResult IndexOutofRangerException()
@@ -44,9 +48,9 @@ namespace RobotDreams.API.Controllers
 >>>>>>> mehmetasker
                 return Ok();
             }
-            catch (Exception ex)
+            catch (System.IndexOutOfRangeException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -63,17 +67,22 @@ namespace RobotDreams.API.Controllers
         [Route("Exception2")]
         public IActionResult NullReferenceException()
         {
-
+            object o = null;
             try
             {
+<<<<<<< HEAD
                 object o = null;
                 o.ToString();
 >>>>>>> mehmetasker
+=======
+
+                var b = o.ToString();
+>>>>>>> mehmetasker
                 return Ok();
             }
-            catch (Exception ex)
+            catch (System.NullReferenceException ex)
             {
-                return BadRequest();
+                return BadRequest("Null referans hatası oluştu: " + ex.Message);
             }
         }
 
@@ -93,13 +102,17 @@ namespace RobotDreams.API.Controllers
             try
             {
                 List<int> value = new();
+<<<<<<< HEAD
 
+>>>>>>> mehmetasker
+=======
+                value.Remove(0);
 >>>>>>> mehmetasker
                 return Ok();
             }
-            catch (Exception ex)
+            catch (System.InvalidOperationException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -113,12 +126,16 @@ namespace RobotDreams.API.Controllers
                 var a = "aaaaa";
 =======
         [Route("Exception4")]
-        public IActionResult  Exception4()
+        public IActionResult Exception4()
         {
 
             try
             {
+<<<<<<< HEAD
                 var a = "aaaaaa";
+>>>>>>> mehmetasker
+=======
+                var a = "aaaaa";
 >>>>>>> mehmetasker
                 var c = Convert.ToInt32(a);
                 return Ok();
@@ -126,9 +143,13 @@ namespace RobotDreams.API.Controllers
             catch (Exception ex)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
 =======
                 var message = $"Message: {ex.Message}, StackTrace: {ex.StackTrace}";
+>>>>>>> mehmetasker
+=======
+                var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
 >>>>>>> mehmetasker
                 _logger.LogError(message);
                 return BadRequest(message);
@@ -153,18 +174,19 @@ namespace RobotDreams.API.Controllers
         [Route("Exception5")]
         public IActionResult Exception5()
         {
-
-            Car car = new Car();
-
             try
             {
-                
-                car.IsHatchback("Ferrari");
+                var a = "aaaaa";
+                var c = Convert.ToInt32(a);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex.Message.Contains("input"))
             {
+<<<<<<< HEAD
                 var message = $"Message: {ex.Message}, StackTrace: {ex.StackTrace}";
+>>>>>>> mehmetasker
+=======
+                var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
 >>>>>>> mehmetasker
                 _logger.LogError(message);
                 return BadRequest(message);
