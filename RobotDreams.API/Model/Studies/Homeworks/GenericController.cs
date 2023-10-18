@@ -39,10 +39,8 @@ namespace RobotDreams.API.Model.Studies.Homeworks
             }
             catch (Exception ex)
             {
-                return Ok("NameSurname is mandatory");
-            }
-
-            
+                return Ok("Missing / wrong information entered");
+            }                        
         }
     }
 }
