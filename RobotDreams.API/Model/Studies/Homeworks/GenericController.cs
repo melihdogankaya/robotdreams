@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RobotDreams.API.Model.Studies.Poly;
 
 namespace RobotDreams.API.Model.Studies.Homeworks
 {
@@ -12,7 +11,6 @@ namespace RobotDreams.API.Model.Studies.Homeworks
         [Route("Generic Homework")]
         public IActionResult StudentAvarage(string nameSurname, int iD, int examResult1, int examResult2)
         {
-
             try
             {
                 Student student = new()
@@ -37,9 +35,7 @@ namespace RobotDreams.API.Model.Studies.Homeworks
                     student1.Code = 200;
                     student1.Message = "Failed - Go study harder before you play! ";
                 }
-
                 return Ok(JsonConvert.SerializeObject(student1));
-
             }
             catch (Exception ex)
             {
@@ -50,4 +46,3 @@ namespace RobotDreams.API.Model.Studies.Homeworks
         }
     }
 }
-
