@@ -2,8 +2,9 @@
 {
     public class GenericAvarageClass <T>
     {
-        public T Value { get; set; }
+        public T Field { get; set; }
         public int Code { get; set; }    
+        public decimal StudentAvarage { get; set; }
         public string Message {  get; set; }
         
 
