@@ -39,7 +39,7 @@ namespace RobotDreams.API.Controllers
         {
             Ferrari ferrariObject = new();
             ferrariObject.EnginePowerCc = enginePower;
-            ferrariObject.Model = "F5a50";
+            ferrariObject.Model = "F50";
 
             ferrariObject.Hatchback = ferrariObject.IsHatchback(ferrariObject.Brand);
 
@@ -66,5 +66,6 @@ namespace RobotDreams.API.Controllers
 
             return Ok(basketSerialized);
         }
+        
     }
 }
