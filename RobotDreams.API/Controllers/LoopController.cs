@@ -5,21 +5,26 @@ namespace RobotDreams.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoopController : Controller
+    public class LoopController : ControllerBase
     {
         [HttpGet]
         [Route("for")]
-
         public IActionResult ExampleFor()
         {
-
+            //for (loop variable ; testing condition ; increment)
+            //{
+            //
+            //}
+            //string sayi1 = "1";
+            //string sayi2 = "2";
+            //string sayi3 = "3";
 
             List<int> numbers = new();
-
-            for (int i = 0; i <= 100; i++)
+            for (int i = 1; i <= 100; i++)
             {
                 numbers.Add(i);
             }
+
             return Ok(JsonConvert.SerializeObject(numbers));
         }
 
@@ -27,14 +32,13 @@ namespace RobotDreams.API.Controllers
         [Route("for2")]
         public IActionResult ExampleFor2()
         {
-
-
             List<int> numbers = new();
 
-            for (int i = 0; i <= 100; i += 2)
+            for (int i = 1; i <= 100; i += 2)
             {
                 numbers.Add(i);
             }
+
             return Ok(JsonConvert.SerializeObject(numbers));
         }
 
@@ -42,11 +46,10 @@ namespace RobotDreams.API.Controllers
         [Route("while")]
         public IActionResult ExampleWhile()
         {
-
             int i = 1;
             List<int> numbers = new();
 
-            //while(Koşul)
+            //while(condition)
             //{
 
             //}
@@ -56,6 +59,7 @@ namespace RobotDreams.API.Controllers
                 numbers.Add(i);
                 i++;
             }
+
             return Ok(JsonConvert.SerializeObject(numbers));
         }
 
@@ -64,20 +68,14 @@ namespace RobotDreams.API.Controllers
         public IActionResult ExampleForeach()
         {
             List<int> result = new();
-            //foreach(data_type var_name in collection_var)
+            int[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            //for (int i = 0; i < array.Length; i++)
             //{
-
+            //    result.Add(array[i]);
             //}
 
-            int[] list = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            //for(int i = 0; i < list.Length; i++)
-            ////{
-            //    result.Add(list[i]);
-            //}
-
-            foreach (var i in list)
-
+            foreach (var i in array)
             {
                 result.Add(i);
             }
@@ -115,11 +113,11 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("Break")]
+        [Route("break")]
         public IActionResult ExampleBreak()
         {
             List<int> result = new();
-            for (int i = 0; i <= 10; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 if (i == 5)
                 {
@@ -131,11 +129,11 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("Continues")]
-        public IActionResult ExampleContinues()
+        [Route("continue")]
+        public IActionResult ExampleContinue()
         {
             List<int> result = new();
-            for (int i = 0; i <= 10; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 if (i == 5)
                 {
@@ -166,8 +164,6 @@ namespace RobotDreams.API.Controllers
             //} while (1 == 1);
 
             return Ok();
-
         }
-
     }
 }

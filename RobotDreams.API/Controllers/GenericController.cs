@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RobotDreams.API.Model;
 using RobotDreams.API.Model.GenericType;
-using Newtonsoft.Json;
 
 namespace RobotDreams.API.Controllers
 {
+    [Route("api/[controller]")]
     public class GenericController : Controller
     {
         [HttpGet]
-        [Route("GenericType1")]
+        [Route("genericType1")]
         public IActionResult GenericTypeExample()
         {
             Generic<string> g = new()
@@ -19,7 +20,7 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("GenericType2")]
+        [Route("genericType2")]
         public IActionResult GenericTypeExample2()
         {
             Generic<int> g = new()
@@ -30,29 +31,24 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("GenericType3")]
+        [Route("genericType3")]
         public IActionResult GenericTypeExample3()
         {
-            Car c = new Car()
+            var c = new Car
             {
-                Color = "Red",
-                Brand = "Ferrari"
+                Color = "Black",
+                Brand = "Fiat"
             };
 
             var g = new Generic<Car>();
-            //{//
-            //    Field = new Car { Brand =  "Renault" },//Car Clasını Api Olarak Dışarıya donuyoruz
-            //    Code = 200,
-            //    Message = "Successful"
-            //};
 
             if (string.IsNullOrEmpty(c.Brand))
-            {//Burada Yaşanan Olayda Eger Generic c.Brand'ı Boş ise Dışarıya içerdekileri yolla
+            {
                 g.Code = 400;
                 g.Message = "Brand is mandatory";
             }
             else
-            {//Yukarıda sorun yok ise Dışarıya içerdekileri yolla
+            {
                 g.Code = 200;
                 g.Message = "Successful";
                 g.Field = c;
@@ -62,7 +58,7 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("GenericType4")]
+        [Route("genericType4")]
         public IActionResult GenericTypeExample4()
         {
             Generic2<string, int> g2 = new();
@@ -80,9 +76,6 @@ namespace RobotDreams.API.Controllers
                 new Car { Brand = "Ferrari", Model = "Enzo", Color = "Kırmızı" },
                 new Car { Brand = "Ferrari", Model = "F50", Color = "Sarı" }
             };
-
-            list.Add(new Car {Brand = "Fiat", Model="picap", Color="Mavi", EnginePowerCc = 2500, Hatchback= true });
-
             return Ok(JsonConvert.SerializeObject(list));
         }
     }

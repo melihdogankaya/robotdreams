@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace RobotDreams.API.Model.Genel
+﻿namespace RobotDreams.API.Model.Genel
 {
     public class SwitchCase
     {
@@ -11,27 +9,15 @@ namespace RobotDreams.API.Model.Genel
         public string SwitchTEst(string a)
         {
             Plaka_Kodu = a;
-            switch (a)
+            return a switch
             {
-                case "37":
-                    return Ekrana_Yaz = "37: Kastamonu";
-                    break;
-                case "34":
-                    return Ekrana_Yaz = "34: İstanbul";
-                    break;
-                case "06":
-                    return Ekrana_Yaz = "06: Ankara";
-                    break;
-                case "31":
-                    return Ekrana_Yaz = "31: Hatay";
-                    break;
-                case "01":
-                    return Ekrana_Yaz = "01: Adana";
-                    break;
-                default:
-                    return Ekrana_Yaz = "Girilen Plaka Kodu Geçersizdir.";
-                    break;
-            }
+                "37" => Ekrana_Yaz = "37: Kastamonu",
+                "34" => Ekrana_Yaz = "34: İstanbul",
+                "06" => Ekrana_Yaz = "06: Ankara",
+                "31" => Ekrana_Yaz = "31: Hatay",
+                "01" => Ekrana_Yaz = "01: Adana",
+                _ => Ekrana_Yaz = "Girilen Plaka Kodu Geçersizdir.",
+            };
         }
 
         

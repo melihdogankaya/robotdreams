@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.VisualBasic;
-
 using Newtonsoft.Json;
 
 namespace RobotDreams.API.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class CollectionController : ControllerBase
@@ -20,22 +16,9 @@ namespace RobotDreams.API.Controllers
             return Ok();
         }
 
-
         [HttpGet]
-        [Route("Collectionlist1")]
-        public IActionResult Examle11()
-        {
-            List<int> intList = new();
-            intList.Add(1);
-
-           // IEnumerable<int> intList2; // DAtabase'ten VEri çekilecegi zamn IEnumerable ile işlemden direk kullanmak için yardım eder
-
-            return Ok(intList);
-        }
-
-        [HttpGet]
-        [Route("Collectionqueue")]
-        public IActionResult Examle2()
+        [Route("collectionqueue")]
+        public IActionResult Example2()
         {
             var q = new Queue<int>();
             q.Enqueue(1);
@@ -44,12 +27,6 @@ namespace RobotDreams.API.Controllers
 
             //q.Dequeue();
             q.Peek();
-            q.Enqueue(4);
-            q.Enqueue(8); // Enqueue En sona Ekler
-
-            q.Dequeue();// Dequeue en Eski elamanı Siler
-            q.Dequeue();
-            q.Dequeue();
 
             return Ok(JsonConvert.SerializeObject(q));
         }
@@ -76,29 +53,5 @@ namespace RobotDreams.API.Controllers
 
             return Ok();
         }
-
-        [Route("Collectiondictionnary")]
-        public IActionResult Examle3()
-        {
-            var dict = new Dictionary<string, object>();
-
-            dict.Add("parametre1", "Mehmet");
-            dict.Add("parametre", 1);
-            dict.Add("isActive", true);
-
-            var parametre2 = dict.FirstOrDefault(p => p.Key == "parametre2").Value;
-            // FirstOrDefault koleksiyonlar üzerinde filtreleme işlemleri yaparken veya bir öğeyi bulma işlemleri için Kullanabiliriz
-            return Ok(parametre2);
-        }
-
-        [HttpGet]
-        [Route("Collection")]
-        public IActionResult Examle4()
-        {
-
-            return Ok();
-        }
-
-
     }
 }

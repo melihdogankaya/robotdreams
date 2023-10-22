@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RobotDreams.API.Model;
-using RobotDreams.API.Model.GenericType;
 
 namespace RobotDreams.API.Controllers
 {
@@ -14,21 +12,19 @@ namespace RobotDreams.API.Controllers
             _logger = logger;
         }
 
-        
         [HttpGet]
-        [Route("Exception")]
-        public IActionResult IndexOutofRangerException()
+        [Route("exception1")]
+        public IActionResult IndexOutOfRangeException()
         {
             try
             {
                 var arr = new int[3];
                 var c = arr[arr.Length + 1];
-                var d = arr[arr.Length + 2];
                 return Ok();
             }
-            catch (System.IndexOutOfRangeException ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
 
@@ -38,14 +34,13 @@ namespace RobotDreams.API.Controllers
         {
             try
             {
-                object o = null;
-                var b = o.ToString();
- 
-                return Ok(b);
+                //object o = null;
+                //var b = o.ToString();
+                return Ok();
             }
-            catch (System.NullReferenceException ex)
+            catch (Exception )
             {
-                return BadRequest("Null referans hatası oluştu: " + ex.Message);
+                return BadRequest();
             }
         }
 
@@ -56,19 +51,17 @@ namespace RobotDreams.API.Controllers
             try
             {
                 List<int> values = new();
-                values.Remove(0);
-
                 return Ok();
             }
-            catch (System.InvalidOperationException ex)
+            catch (Exception )
             {
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
 
         [HttpGet]
         [Route("exception4")]
-        public IActionResult Exception44()
+        public IActionResult Exception()
         {
             try
             {
@@ -79,7 +72,6 @@ namespace RobotDreams.API.Controllers
             catch (Exception ex)
             {
                 var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
-
                 _logger.LogError(message);
                 return BadRequest(message);
             }
@@ -127,7 +119,7 @@ namespace RobotDreams.API.Controllers
             {
                 string exMessage = $"Exception: {ex.Message} StackTrace: {ex.StackTrace}";
                 return BadRequest(exMessage);
-            }         
+            }
         }
     }
 }

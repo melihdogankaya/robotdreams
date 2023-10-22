@@ -7,6 +7,7 @@ namespace RobotDreams.API.Model
         public string Type { get; set; }
         public int HacimMl { get; set; }
         public string Brand { get; set; }
+        public double Balance { get; set; }
 
         public override double AddKdv()
         {

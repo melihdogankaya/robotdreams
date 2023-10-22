@@ -2,34 +2,28 @@
 
 namespace RobotDreams.API.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
-   
-
-    public class ConditionController : Controller
+    public class ConditionController : ControllerBase
     {
         [HttpGet]
-        [Route("ifelse")]
-
-        public IActionResult Conditionexample(string name)
+        [Route("if")]
+        public IActionResult ConditionExample(string name)
         {
-            string result = string.Empty;
+            string result;
+
             if (name.StartsWith("m"))
             {
-                result = "İsminiz M harfi ile başlıyorsunuz.";
-
+                result = "İsminiz m harfi ile başlıyor.";
             }
             else if (name.StartsWith("M"))
             {
                 result = "İsminiz M harfi ile başlıyor.";
             }
-
             else if (name.StartsWith("Ö"))
             {
                 result = "İsminiz Ö harfi ile başlıyor.";
             }
-
             else
             {
                 result = "İsminiz m harfi ile başlamıyor.";
@@ -39,10 +33,8 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("switch")]
-
-        public IActionResult Conditionexample2(string teamCode)
-
+        [Route("switchcase")]
+        public IActionResult ConditionExample2(string teamCode)
         {
             //switch (switch_on)
             //{
@@ -77,11 +69,9 @@ namespace RobotDreams.API.Controllers
                 "bjk" => "Beşiktaş",
                 "fb" => "Fenerbahçe",
                 "gs" => "Galatasaray",
-
                 "ts" => "Trabzonspor",
                 _ => "Hiçbir değer geçerli değil."
             };
-
 
             return Ok(result);
         }

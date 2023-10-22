@@ -5,7 +5,7 @@ namespace RobotDreams.API.Model.DLinqAttribute
     [Class("User", "Base")]
     public class User
     {
-        [Property("Id", true)]
+        [Property(nameof(Id), true)]
         public Guid Id { get; set; }
     }
 }

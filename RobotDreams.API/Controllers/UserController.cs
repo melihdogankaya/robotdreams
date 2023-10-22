@@ -26,15 +26,15 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("Model cannot be null");
             }
 
-            if(string.IsNullOrEmpty(model.Email) && string.IsNullOrEmpty(model.Password))
+            if (string.IsNullOrEmpty(model.Email) && string.IsNullOrEmpty(model.Password))
             {
                 return BadRequest("Email and Password cannot be empty.");
             }
 
-            dbContext.Users.Add(new User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid()});
+            dbContext.Users.Add(new User { Name = model.Name, Surname = model.Surname, Username = model.Username, Email = model.Email, Password = model.Password, Id = Guid.NewGuid() });
             var result = dbContext.SaveChanges();
 
-            if(result <= 0)
+            if (result <= 0)
             {
                 return BadRequest("User cannot be created.");
             }
@@ -58,7 +58,7 @@ namespace RobotDreams.API.Controllers
 
             var findUser = dbContext.Users.FirstOrDefault(p => p.Email == model.Email && p.Password == model.Password);
 
-            if(findUser == null) 
+            if (findUser == null)
             {
                 return NotFound();
             }
@@ -66,7 +66,7 @@ namespace RobotDreams.API.Controllers
             response.TokenExpireDate = DateTime.Now;
             response.Authenticate = true;
             response.Token = string.Empty;
-            
+
             return Ok(JsonConvert.SerializeObject(response));
         }
     }
