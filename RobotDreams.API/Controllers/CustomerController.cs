@@ -14,6 +14,7 @@ namespace RobotDreams.API.Controllers
             Payment _odemeAl = new Payment();
 
             Bus _otobus = new(1234, "Mehmet", "Asker", 15000, 35, 25);
+
             Plane _ucak = new(4567, "Layane", "Asker", 30000, 25, 75);
 
             _odemeAl.Ekle(_otobus);
