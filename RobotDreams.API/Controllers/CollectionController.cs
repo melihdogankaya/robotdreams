@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-=======
+
 using Microsoft.VisualBasic;
->>>>>>> mehmetasker
+
 using Newtonsoft.Json;
 
 namespace RobotDreams.API.Controllers
 {
-<<<<<<< HEAD
+
     [Route("api/[controller]")]
     [ApiController]
     public class CollectionController : ControllerBase
@@ -21,20 +20,15 @@ namespace RobotDreams.API.Controllers
             return Ok();
         }
 
+
         [HttpGet]
-        [Route("collectionqueue")]
-        public IActionResult Example2()
-=======
-    public class CollectionController : Controller
-    {
-        [HttpGet]
-        [Route("Collectionlist")]
-        public IActionResult Examle1()
+        [Route("Collectionlist1")]
+        public IActionResult Examle11()
         {
             List<int> intList = new();
             intList.Add(1);
 
-            IEnumerable<int> intList2; // DAtabase'ten VEri çekilecegi zamn IEnumerable ile işlemden direk kullanmak için yardım eder
+           // IEnumerable<int> intList2; // DAtabase'ten VEri çekilecegi zamn IEnumerable ile işlemden direk kullanmak için yardım eder
 
             return Ok(intList);
         }
@@ -42,30 +36,25 @@ namespace RobotDreams.API.Controllers
         [HttpGet]
         [Route("Collectionqueue")]
         public IActionResult Examle2()
->>>>>>> mehmetasker
         {
             var q = new Queue<int>();
             q.Enqueue(1);
             q.Enqueue(2);
             q.Enqueue(3);
-<<<<<<< HEAD
 
             //q.Dequeue();
             q.Peek();
-=======
             q.Enqueue(4);
             q.Enqueue(8); // Enqueue En sona Ekler
 
             q.Dequeue();// Dequeue en Eski elamanı Siler
             q.Dequeue();
             q.Dequeue();
->>>>>>> mehmetasker
 
             return Ok(JsonConvert.SerializeObject(q));
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("collectiondictionary")]
         public IActionResult Example3()
         {
@@ -84,10 +73,10 @@ namespace RobotDreams.API.Controllers
         [Route("collection")]
         public IActionResult Example4()
         {
-           
+
             return Ok();
         }
-=======
+
         [Route("Collectiondictionnary")]
         public IActionResult Examle3()
         {
@@ -106,13 +95,10 @@ namespace RobotDreams.API.Controllers
         [Route("Collection")]
         public IActionResult Examle4()
         {
-            
+
             return Ok();
         }
 
 
-
-
->>>>>>> mehmetasker
     }
 }

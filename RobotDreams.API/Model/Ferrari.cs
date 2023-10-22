@@ -2,7 +2,7 @@
 {
     public class Ferrari : Car
     {
-        public string Brand
+        public string Brands
         {
             get { return "Ferrari"; }
         }

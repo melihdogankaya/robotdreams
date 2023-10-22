@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
+using RobotDreams.API.Model;
+using RobotDreams.API.Model.GenericType;
 
 namespace RobotDreams.API.Controllers
 {
@@ -8,44 +9,21 @@ namespace RobotDreams.API.Controllers
     {
         private ILogger<ExceptionController> _logger;
 
-=======
-using RobotDreams.API.Model;
-using RobotDreams.API.Model.GenericType;
-
-namespace RobotDreams.API.Controllers
-{
-
-    public class ExceptionController : Controller
-    {
-        private ILogger<ExceptionController> _logger;
->>>>>>> mehmetasker
         public ExceptionController(ILogger<ExceptionController> logger)
         {
             _logger = logger;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-        [HttpGet]
-        [Route("exception1")]
-        public IActionResult IndexOutOfRangeException()
-=======
-=======
-
->>>>>>> mehmetasker
+        
         [HttpGet]
         [Route("Exception")]
         public IActionResult IndexOutofRangerException()
->>>>>>> mehmetasker
         {
             try
             {
                 var arr = new int[3];
-<<<<<<< HEAD
                 var c = arr[arr.Length + 1];
-=======
-                var c = arr[arr.Length + 2];
->>>>>>> mehmetasker
+                var d = arr[arr.Length + 2];
                 return Ok();
             }
             catch (System.IndexOutOfRangeException ex)
@@ -55,7 +33,6 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("exception2")]
         public IActionResult NullReferenceException()
         {
@@ -63,22 +40,8 @@ namespace RobotDreams.API.Controllers
             {
                 object o = null;
                 var b = o.ToString();
-=======
-        [Route("Exception2")]
-        public IActionResult NullReferenceException()
-        {
-            object o = null;
-            try
-            {
-<<<<<<< HEAD
-                object o = null;
-                o.ToString();
->>>>>>> mehmetasker
-=======
-
-                var b = o.ToString();
->>>>>>> mehmetasker
-                return Ok();
+ 
+                return Ok(b);
             }
             catch (System.NullReferenceException ex)
             {
@@ -87,27 +50,14 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("exception3")]
         public IActionResult InvalidOperationException()
         {
             try
             {
                 List<int> values = new();
-=======
-        [Route("Exception3")]
-        public IActionResult InvalidOperationException()
-        {
+                values.Remove(0);
 
-            try
-            {
-                List<int> value = new();
-<<<<<<< HEAD
-
->>>>>>> mehmetasker
-=======
-                value.Remove(0);
->>>>>>> mehmetasker
                 return Ok();
             }
             catch (System.InvalidOperationException ex)
@@ -117,47 +67,25 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("exception4")]
-        public IActionResult Exception()
+        public IActionResult Exception44()
         {
             try
             {
                 var a = "aaaaa";
-=======
-        [Route("Exception4")]
-        public IActionResult Exception4()
-        {
-
-            try
-            {
-<<<<<<< HEAD
-                var a = "aaaaaa";
->>>>>>> mehmetasker
-=======
-                var a = "aaaaa";
->>>>>>> mehmetasker
                 var c = Convert.ToInt32(a);
                 return Ok();
             }
             catch (Exception ex)
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
-=======
-                var message = $"Message: {ex.Message}, StackTrace: {ex.StackTrace}";
->>>>>>> mehmetasker
-=======
-                var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
->>>>>>> mehmetasker
+
                 _logger.LogError(message);
                 return BadRequest(message);
             }
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("exception5")]
         public IActionResult Exception5()
         {
@@ -170,24 +98,6 @@ namespace RobotDreams.API.Controllers
             catch (Exception ex) when (ex.Message.Contains("input"))
             {
                 var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
-=======
-        [Route("Exception5")]
-        public IActionResult Exception5()
-        {
-            try
-            {
-                var a = "aaaaa";
-                var c = Convert.ToInt32(a);
-                return Ok();
-            }
-            catch (Exception ex) when (ex.Message.Contains("input"))
-            {
-<<<<<<< HEAD
-                var message = $"Message: {ex.Message}, StackTrace: {ex.StackTrace}";
->>>>>>> mehmetasker
-=======
-                var message = $"Message: {ex.Message} , StackTrace: {ex.StackTrace}";
->>>>>>> mehmetasker
                 _logger.LogError(message);
                 return BadRequest(message);
             }
@@ -220,9 +130,4 @@ namespace RobotDreams.API.Controllers
             }         
         }
     }
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> mehmetasker
