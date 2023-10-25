@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Net;
+using RobotDreams.API.Model.Odev1.Attributes;
 
 namespace RobotDreams.API.Model.Odev1
 {
@@ -15,12 +16,11 @@ namespace RobotDreams.API.Model.Odev1
             try
             {
                 GenericEx<string> _marka = new();
-
-                
+                               
 
                 string aracModels = _marka.OtoMarkalari(brand);
 
-                return Ok(aracModels + " - ");
+                return Ok(aracModels);
 
             }
             catch (Exception ex)
@@ -29,14 +29,5 @@ namespace RobotDreams.API.Model.Odev1
             }
         }
 
-        [HttpGet]
-        [Route("AttributeExample")]
-        public IActionResult AttributeExample1()
-        {
-
-
-
-            return Ok();
-        }
     }
 }
