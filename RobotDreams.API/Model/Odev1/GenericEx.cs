@@ -2,8 +2,12 @@
 {
     public class GenericEx<T> 
     {
-        public T Typeslar {  get; set; }
         
+        public T Typeslar {  get; set; }
+
+        //.NET 7 ile bir API Projesi oluşturarak içinde minimum bir tane Generic Class(T Class) oluşturup, generic
+        //class içinde oluşacak hataları farklı Exception türlerini handle edebilecek kod bloğunu oluşturunuz.
+ 
         public string CarBrand { get; set; }
 
         public string OtoMarkalari(string name)
@@ -27,7 +31,7 @@
                     list1.Add("Captur");
                     list1.Add("Austral");
                     list1.Add("ZOE");
-                    CarBrand = string.Join(",", list1);
+                    CarBrand = string.Join(",", list1);                    
                     return CarBrand;
 
                 case "FERRARİ":

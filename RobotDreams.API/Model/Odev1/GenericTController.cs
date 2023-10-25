@@ -16,17 +16,27 @@ namespace RobotDreams.API.Model.Odev1
             {
                 GenericEx<string> _marka = new();
 
+                
+
                 string aracModels = _marka.OtoMarkalari(brand);
 
-                return Ok(aracModels);
+                return Ok(aracModels + " - ");
 
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message + ex.StackTrace);
             }
+        }
 
-            
+        [HttpGet]
+        [Route("AttributeExample")]
+        public IActionResult AttributeExample1()
+        {
+
+
+
+            return Ok();
         }
     }
 }
