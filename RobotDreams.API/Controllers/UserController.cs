@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RobotDreams.API.Context;
 using RobotDreams.API.Context.Domain;
 using RobotDreams.API.Model.EntityFrameworkExample;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace RobotDreams.API.Controllers
 {
@@ -10,10 +14,12 @@ namespace RobotDreams.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IConfiguration configuration;
         private readonly RobotDreamsDbContext dbContext;
 
-        public UserController(RobotDreamsDbContext dbContext)
+        public UserController(IConfiguration configuration, RobotDreamsDbContext dbContext)
         {
+            this.configuration = configuration;
             this.dbContext = dbContext;
         }
 
@@ -63,10 +69,43 @@ namespace RobotDreams.API.Controllers
                 return NotFound();
             }
 
-            response.TokenExpireDate = DateTime.Now;
+            var expirationInMinutes = TimeSpan.FromMinutes(10);
+            var expireMinute = DateTime.Now.AddMinutes(expirationInMinutes.Minutes);
+
+            var claims = new List<Claim> {
+                new Claim(JwtRegisteredClaimNames.Sub, configuration["JwtSecurityToken:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(), ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Exp, EpochTime.GetIntDate(expireMinute).ToString(), ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iss, configuration["JwtSecurityToken:Issuer"]),
+                new Claim(JwtRegisteredClaimNames.Aud, configuration["JwtSecurityToken:Audience"]),
+                new Claim("Name", findUser.Name),
+                new Claim("Surname", findUser.Surname),
+                new Claim("Email", findUser.Email),
+                new Claim("UserId", findUser.Id.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSecurityToken:Key"]));
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                        issuer: configuration["JwtSecurityToken:Issuer"],
+                        audience: configuration["JwtSecurityToken:Audience"],
+                        claims: claims,
+                        expires: expireMinute,
+                        signingCredentials: signIn);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            response.TokenExpireDate = expireMinute;
             response.Authenticate = true;
+<<<<<<< HEAD
             response.Token = string.Empty;
 
+=======
+            response.Token = tokenHandler.WriteToken(token);
+            
+>>>>>>> main
             return Ok(JsonConvert.SerializeObject(response));
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RobotDreams.API.Controllers
 {
@@ -6,6 +7,7 @@ namespace RobotDreams.API.Controllers
     [ApiController]
     public class ConditionController : ControllerBase
     {
+        [Authorize]
         [HttpGet]
         [Route("if")]
         public IActionResult ConditionExample(string name)
