@@ -1,4 +1,6 @@
-﻿namespace RobotDreams.API.Context.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RobotDreams.API.Context.Domain
 {
     public class User
     {
@@ -7,5 +9,7 @@
         public string Surname { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        [MaxLength(20)]
+        public string PhoneNumber { get; set; }
     }
 }
