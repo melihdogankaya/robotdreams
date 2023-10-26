@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RobotDreams.API.Context;
 
@@ -11,9 +12,11 @@ using RobotDreams.API.Context;
 namespace RobotDreams.API.Migrations
 {
     [DbContext(typeof(RobotDreamsDbContext))]
-    partial class RobotDreamsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231026175836_UserPhoneNumberEntityChange")]
+    partial class UserPhoneNumberEntityChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,10 +49,6 @@ namespace RobotDreams.API.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
