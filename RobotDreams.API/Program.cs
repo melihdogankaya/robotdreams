@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using RobotDreams.API.Context;
+using RobotDreams.API.Model;
 using RobotDreams.API.Model.Settings;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +85,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+var resp = "<html><b>You don't have access to this method. Forbidden</b></html>";
+
+//app.UseStatusCodePages(Text.Plain, $"");
+app.UseStatusCodePages(Text.Html, resp);
+//app.UseExceptionHandler(exceptionHandlerApp =>
+//{
+//    exceptionHandlerApp.Run(async context =>
+//    {
+//        if (context.Response.StatusCode == StatusCodes.Status403Forbidden) {
+//            context.Response.ContentType = Text.Plain;
+//            await context.Response.WriteAsync("You don't have access this method");
+//        }      
+//    });
+//});
 
 app.UseHttpsRedirection();
 
