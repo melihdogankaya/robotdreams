@@ -7,7 +7,7 @@ namespace RobotDreams.API.Controllers
     [ApiController]
     public class ConditionController : ControllerBase
     {
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("if")]
         public IActionResult ConditionExample(string name)

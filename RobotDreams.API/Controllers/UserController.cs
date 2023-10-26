@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RobotDreams.API.Context;
@@ -69,6 +70,8 @@ namespace RobotDreams.API.Controllers
                 return NotFound();
             }
 
+            var userRoles = dbContext.UserRoles.Where(p => p.UserId == findUser.Id).Include(c => c.User).AsEnumerable();
+
             var expirationInMinutes = TimeSpan.FromMinutes(10);
             var expireMinute = DateTime.Now.AddMinutes(expirationInMinutes.Minutes);
 
@@ -84,6 +87,14 @@ namespace RobotDreams.API.Controllers
                 new Claim("Email", findUser.Email),
                 new Claim("UserId", findUser.Id.ToString())
             };
+
+            if (userRoles.Any())
+            {
+                foreach (var role in userRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role.Role));
+                }
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSecurityToken:Key"]));
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
