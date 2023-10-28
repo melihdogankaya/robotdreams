@@ -39,9 +39,8 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("Email and Password cannot be empty.");
             }
 
-<<<<<<< HEAD
             dbContext.Users.Add(new User { Name = model.Name, Surname = model.Surname, Username = model.Username, Email = model.Email, Password = model.Password, Id = Guid.NewGuid() });
-=======
+
             if (!RegExUtilities.IsValidEmail(model.Email))
             {
                 return BadRequest("Email address format doesn't correct.");
@@ -52,8 +51,7 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("PhoneNumber format doesn't correct.");
             }
 
-            dbContext.Users.Add(new User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber});
->>>>>>> main
+
             var result = dbContext.SaveChanges();
 
             if (result <= 0)
