@@ -46,10 +46,10 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("Email address format doesn't correct.");
             }
 
-            if (!RegExUtilities.IsPhoneNumberCorrect(model.PhoneNumber))
-            {
-                return BadRequest("PhoneNumber format doesn't correct.");
-            }
+            //if (!RegExUtilities.IsPhoneNumberCorrect(model.PhoneNumber))
+            //{
+            //    return BadRequest("PhoneNumber format doesn't correct.");
+            //}
 
 
             var result = dbContext.SaveChanges();
@@ -123,13 +123,8 @@ namespace RobotDreams.API.Controllers
 
             response.TokenExpireDate = expireMinute;
             response.Authenticate = true;
-<<<<<<< HEAD
-            response.Token = string.Empty;
-
-=======
             response.Token = tokenHandler.WriteToken(token);
             
->>>>>>> main
             return Ok(JsonConvert.SerializeObject(response));
         }
     }

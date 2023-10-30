@@ -10,8 +10,8 @@ namespace RobotDreams.API.Controllers
         [Route("concanate")]
         public IActionResult Concanate()
         {
-            string s1 = "Melih";
-            string s2 = "Doğankaya";
+            string s1 = "Mehmet";
+            string s2 = "Asker";
             string space = " ";
             //s1 += space + s2;
             //string c = string.Concat(s1,space,s2);
@@ -20,29 +20,32 @@ namespace RobotDreams.API.Controllers
         }
 
         [HttpGet]
-        [Route("split")]
-        public IActionResult Split([FromQuery] string names)
-        {
-            //emaillist = "melih@melih.com;merbay@merbay.com;mehmetasker@google.com"
-            string[] splittedValues = names.Split(",");
-            return Ok(splittedValues);
+        [Route("Split")]
+        public IActionResult Split([FromBody] string names)
+        {// Bunu Ayraç olarak kullanıyoruz mesala Mehmet@lsklda.com;layane@layane.com gibi ; sonrasını ayr
+            string[] splittedValue = names.Split(",");
+
+            return Ok(splittedValue);
         }
 
         [HttpGet]
         [Route("replace")]
-        public IActionResult Replace([FromQuery] string names)
-        {
-            string replacedValues = names.Replace("Melih", "Mehmet").Replace("/","\\").Replace("1,645,00","1.645.00");
-            return Ok(replacedValues);
+        public IActionResult Replace([FromBody] string name)
+        {//                                     Degiştir => "Bunu","buna" çevir
+            string reblaceValue = name.Replace("Mehmet", "Ahmet").Replace("\"", "/").Replace("1,655,00", "1.655.00");
+
+            return Ok(reblaceValue);
         }
 
         [HttpGet]
-        [Route("substringjoin")]
-        public IActionResult SubstringJoin()
-        {
-            //string substring = names.Substring(1,5);
-            var join = string.Join(",", new string[] { "Melih", "Mehmet", "Şeyma" });
-            return Ok(join);
+        [Route("substring")]
+        public IActionResult Substring([FromBody] string name)
+        {//                                    1 dan basla 5 e kadar ilerle ve arasındakileri al
+            string substring = name.Substring(1,5);
+
+            return Ok(substring);
         }
+
+
     }
 }
