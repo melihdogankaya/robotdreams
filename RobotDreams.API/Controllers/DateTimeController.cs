@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -46,11 +45,11 @@ namespace RobotDreams.API.Controllers
         public IActionResult Example2()
         {
             List<string> result = new();
-            var date = new DateTime(2000, 03, 19, 18, 3,12);
+            var date = new DateTime(2000, 03, 19, 18, 3, 12);
             string[] standardFnts = { "d", "D", "f", "F", "g", "G", "m", "o" };
             foreach (var item in standardFnts)
             {
-                result.Add($"{item} : {date.ToString(item)}");  
+                result.Add($"{item} : {date.ToString(item)}");
             }
 
             return Ok(JsonConvert.SerializeObject(result));
@@ -62,15 +61,71 @@ namespace RobotDreams.API.Controllers
         {
 
             var stringDate = "13/10/2023 19:27";
-           var result = DateTime.TryParse(stringDate, out DateTime date);
-           
-            if(result)
+            var result = DateTime.TryParse(stringDate, out DateTime date);
+
+            if (result)
             {
-               date = date.AddDays(4);
+                date = date.AddDays(4);
             }
-            
+
             return Ok(date);
         }
-    }
+        [HttpGet]
+        [Route("DateTime 3")]
+        public IActionResult Example3()
+        {
+            DateTime date = new DateTime(1988, 03, 19);
+            List<string> result = new();
 
+            String[] customFormats = { " h:mm:ss", "d MMM yyyy" };
+            foreach (var item in customFormats)
+            {
+                result.Add($"{item} : {date.ToString(item)}");
+            }
+            return Ok(JsonConvert.SerializeObject(result));
+        }
+
+        [HttpGet]
+        [Route("DateTime 4")]
+        public IActionResult Example4(string StringDate)
+        {
+
+            string stringDate = StringDate;
+            var check = DateTime.TryParse(stringDate, out DateTime date);
+            bool result = false;
+            void Check()
+            {
+             
+                if (check)
+                {
+                    result = true;
+                }
+                else
+                {
+                    Check();
+                }
+            }
+
+            Check();
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("DateTime 5")]
+        public IActionResult Example5(string stringDate1, string stringDate2) 
+        {
+            DateTime.TryParse(stringDate1? .ToString(), out DateTime date1);
+
+            DateTime.TryParse(stringDate2?.ToString(), out DateTime date2);          
+            
+            return Ok(date1.Subtract(date2));
+        }
+    }
 }
+
+        
+
+
+
+
+
+
