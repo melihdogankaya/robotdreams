@@ -1,6 +1,8 @@
-﻿namespace RobotDreams.API.Context
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace RobotDreams.API.Context
 {
-    public class RobotDreamsDbContext
+    public class RobotDreamsDbContext : DbContext
     {
     }
 }
