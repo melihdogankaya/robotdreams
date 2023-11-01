@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RobotDreams.API.Context.Domain;
 
 namespace RobotDreams.API.Context
 {
