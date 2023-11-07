@@ -15,11 +15,11 @@ builder.Configuration.Sources.Clear();
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                     //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true);
+//builder.Configuration.AddXmlFile("appsettings.xml", true, true);
+builder.Configuration//.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                     .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true);
 
 ConfigurationSettingsSimple simpleConfigurationSettings = new();
 builder.Configuration.GetSection("Settings").Bind(simpleConfigurationSettings);
