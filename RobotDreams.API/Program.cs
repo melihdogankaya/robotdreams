@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using RobotDreams.API.Context;
-using RobotDreams.API.Model;
 using RobotDreams.API.Model.Settings;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
@@ -17,9 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Configuration.AddEnvironmentVariables("appsettings.json");
+//builder.Configuration.AddEnvironmentVariables("appsettings.json");
+//var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
+var connection = config["ConnectionStrings:DefaultConnection"];
+
+//ConfigurationSettings? settings = config.GetRequiredSection("Settings").Get<ConfigurationSettings>();
+
 builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddSwaggerGen(c =>
 {
