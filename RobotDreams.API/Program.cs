@@ -8,19 +8,27 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
+IHostEnvironment environment = builder.Environment;
+
+builder.Configuration.Sources.Clear();
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Configuration.AddEnvironmentVariables("appsettings.json");
-//var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
-var connection = config["ConnectionStrings:DefaultConnection"];
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                     //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true);
 
-//ConfigurationSettings? settings = config.GetRequiredSection("Settings").Get<ConfigurationSettings>();
+ConfigurationSettingsSimple simpleConfigurationSettings = new();
+builder.Configuration.GetSection("Settings").Bind(simpleConfigurationSettings);
+
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+//IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
+//var connection = config["ConnectionStrings:DefaultConnection"];
+
 
 builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddSwaggerGen(c =>
