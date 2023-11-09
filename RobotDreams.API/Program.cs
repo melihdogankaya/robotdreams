@@ -3,34 +3,34 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RobotDreams.API.Context;
+using RobotDreams.API.Helper;
 using RobotDreams.API.Model.Settings;
+using Serilog;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 IHostEnvironment environment = builder.Environment;
-
 builder.Configuration.Sources.Clear();
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-//builder.Configuration.AddXmlFile("appsettings.xml", true, true);
-builder.Configuration//.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                     .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true);
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-ConfigurationSettingsSimple simpleConfigurationSettings = new();
-builder.Configuration.GetSection("Settings").Bind(simpleConfigurationSettings);
+//var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
 
-var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
+                                                       .Enrich.WithEnvironmentName()
+                                                       .WriteTo.Debug()
+                                                       .WriteTo.Console()
+                                                       .WriteTo.Elasticsearch(ConfigureElasticSink.Configure(builder.Configuration, environment.EnvironmentName))
+                                                       .Enrich.WithProperty("Environment", environment.EnvironmentName)
+                                                       .ReadFrom.Configuration(builder.Configuration)
+                                                       .CreateLogger();
+builder.Host.UseSerilog();
 
-//IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
-//var connection = config["ConnectionStrings:DefaultConnection"];
-
-
-builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Melih's API", Version = "v1" });
@@ -61,6 +61,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 
 
 builder.Services.AddAuthentication(options =>
@@ -95,22 +96,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
-var resp = "<html><b>You don't have access to this method. Forbidden</b></html>";
-
-//app.UseStatusCodePages(Text.Plain, $"");
-app.UseStatusCodePages(Text.Html, resp);
-//app.UseExceptionHandler(exceptionHandlerApp =>
-//{
-//    exceptionHandlerApp.Run(async context =>
-//    {
-//        if (context.Response.StatusCode == StatusCodes.Status403Forbidden) {
-//            context.Response.ContentType = Text.Plain;
-//            await context.Response.WriteAsync("You don't have access this method");
-//        }      
-//    });
-//});
 
 app.UseHttpsRedirection();
 

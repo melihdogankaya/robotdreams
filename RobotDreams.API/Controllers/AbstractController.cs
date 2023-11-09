@@ -8,10 +8,19 @@ namespace RobotDreams.API.Controllers
     [ApiController]
     public class AbstractController : ControllerBase
     {
+        private readonly ILogger<AbstractController> logger;
+
+        public AbstractController(ILogger<AbstractController> logger)
+        {
+            this.logger = logger;
+        }
+
         [HttpGet]
         [Route("example1")]
         public IActionResult Abstract1()
         {
+            logger.LogInformation($"Abstract1 called.");
+
             Guitar guitar = new() { Name = "ESP", Description = "Amerika üretimi" };
             Drum drum = new() { Name = "Tama", Description = "Japon üretimi" };
             Piano piano = new() { Name = "Kawai", Description = "Japon üretimi" };
@@ -25,6 +34,8 @@ namespace RobotDreams.API.Controllers
             string serializedPianist = JsonConvert.SerializeObject(pianist);
 
             string result = serializedDrummer + serializedPianist + serializedGuitarist;
+
+            logger.LogInformation($"Abstract 1 Response: {result}");
 
             return Ok(result);
         }
