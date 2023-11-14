@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using RobotDreams.API.Helper;
 using RobotDreams.API.Model.Abstract;
 
 namespace RobotDreams.API.Controllers
@@ -8,20 +10,18 @@ namespace RobotDreams.API.Controllers
     [ApiController]
     public class AbstractController : ControllerBase
     {
-        private readonly ILogger<AbstractController> logger;
+        private readonly LanguageService _languageService;
 
-        public AbstractController(ILogger<AbstractController> logger)
+        public AbstractController(LanguageService languageService)
         {
-            this.logger = logger;
+            _languageService = languageService;
         }
 
         [HttpGet]
         [Route("example1")]
-        public IActionResult Abstract1()
+        public IActionResult Abstract1(string culture)
         {
-            logger.LogInformation($"Abstract1 called.");
-
-            Guitar guitar = new() { Name = "ESP", Description = "Amerika üretimi" };
+            Guitar guitar = new() { Name = "ESP", Description = _languageService.GetKey("American.Product") };
             Drum drum = new() { Name = "Tama", Description = "Japon üretimi" };
             Piano piano = new() { Name = "Kawai", Description = "Japon üretimi" };
 
@@ -34,9 +34,6 @@ namespace RobotDreams.API.Controllers
             string serializedPianist = JsonConvert.SerializeObject(pianist);
 
             string result = serializedDrummer + serializedPianist + serializedGuitarist;
-
-            logger.LogInformation($"Abstract 1 Response: {result}");
-
             return Ok(result);
         }
     }
