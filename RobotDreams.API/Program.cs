@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RobotDreams.API.Context;
-using RobotDreams.API.Helper;
 using RobotDreams.API.Model.Settings;
-using Serilog;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 IHostEnvironment environment = builder.Environment;
@@ -20,16 +15,6 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnCh
 
 //var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 //builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
-
-Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
-                                                       .Enrich.WithEnvironmentName()
-                                                       .WriteTo.Debug()
-                                                       .WriteTo.Console()
-                                                       .WriteTo.Elasticsearch(ConfigureElasticSink.Configure(builder.Configuration, environment.EnvironmentName))
-                                                       .Enrich.WithProperty("Environment", environment.EnvironmentName)
-                                                       .ReadFrom.Configuration(builder.Configuration)
-                                                       .CreateLogger();
-builder.Host.UseSerilog();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -61,8 +46,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-
 
 builder.Services.AddAuthentication(options =>
 {
