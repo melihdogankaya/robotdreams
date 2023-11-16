@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Elasticsearch.Net.Specification.WatcherApi;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RobotDreams.API.Context;
 using RobotDreams.API.Context.Domain;
 using RobotDreams.API.Helper;
+using RobotDreams.API.Model.DLinqAttribute;
 using RobotDreams.API.Model.EntityFrameworkExample;
+using RobotDreams.API.Model.Interface;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,11 +23,16 @@ namespace RobotDreams.API.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly RobotDreamsDbContext dbContext;
-       
-        public UserController(IConfiguration configuration, RobotDreamsDbContext dbContext)
+        private readonly ICacheService cacheService;
+
+        private readonly IMemoryCache memCache;
+
+        public UserController(IConfiguration configuration, RobotDreamsDbContext dbContext, ICacheService cacheService, IMemoryCache memCache)
         {
             this.configuration = configuration;
             this.dbContext = dbContext;
+            this.cacheService = cacheService;
+            this.memCache = memCache;
         }
 
         [HttpPost]
@@ -49,7 +59,7 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("PhoneNumber format doesn't correct.");
             }
 
-            dbContext.Users.Add(new User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber});
+            dbContext.Users.Add(new Context.Domain.User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber});
             var result = dbContext.SaveChanges();
 
             if(result <= 0)
@@ -99,13 +109,13 @@ namespace RobotDreams.API.Controllers
                 new Claim("UserId", findUser.Id.ToString())
             };
 
-            if (userRoles.Any())
-            {
-                foreach (var role in userRoles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role.Role));
-                }
-            }
+            //if (userRoles.Any())
+            //{
+            //    foreach (var role in userRoles)
+            //    {
+            //        claims.Add(new Claim(ClaimTypes.Role, role.Role));
+            //    }
+            //}
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSecurityToken:Key"]));
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -124,6 +134,46 @@ namespace RobotDreams.API.Controllers
             response.Token = tokenHandler.WriteToken(token);
             
             return Ok(JsonConvert.SerializeObject(response));
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("getUserRoles")]
+        public async Task<IActionResult> GetUserRoles([FromQuery] Guid? userId)
+        {
+            if(userId == null)
+            {
+                return BadRequest("UserId cannot be null");
+            }
+
+            //var cacheForUserRole = await cacheService.GetValueAsync($"robotdreams.user.roles.{userId}");
+
+            var cacheForUserRole = memCache.TryGetValue($"robotdreams.user.roles.{userId}", out string? userRoles);
+
+            if(cacheForUserRole && !string.IsNullOrEmpty(userRoles))
+            {
+                return Ok(JsonConvert.DeserializeObject<IEnumerable<UserRoles>>(userRoles));
+            }
+
+            var userRolesFromDb = dbContext.UserRoles.Where(p => p.UserId == userId).Include(p => p.User).AsEnumerable();
+
+            if(userRolesFromDb == null)
+            {
+                return BadRequest("User hasn't got any roles.");
+            }
+
+            //await cacheService.SetValueAsync($"robotdreams.user.roles.{userId}", JsonConvert.SerializeObject(userRoles));
+
+
+            return Ok(JsonConvert.SerializeObject(userRolesFromDb));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("setMemCache")]
+        public void SetCache([FromQuery]Guid userId, [FromBody]IEnumerable<UserRoles> userRoles)
+        {
+            memCache.Set($"robotdreams.user.roles.{userId}", JsonConvert.SerializeObject(userRoles), DateTime.Now.AddSeconds(35));
         }
     }
 }

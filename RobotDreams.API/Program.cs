@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Linq;
+using RobotDreams.API.Context;
 using RobotDreams.API.Helper;
+using RobotDreams.API.Model.Interface;
 using RobotDreams.API.Model.Settings;
 using Serilog;
+using StackExchange.Redis;
 using System.Globalization;
 using System.Text;
 
@@ -32,11 +37,15 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration["Redis"]);
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 //ConfigureLogger.ConfigureLogging(builder.Configuration);
 //builder.Host.UseSerilog();
 
-//var connection = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
 
 builder.Services.AddSwaggerGen(c =>
 {
