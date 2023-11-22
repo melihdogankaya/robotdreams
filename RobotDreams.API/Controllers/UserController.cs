@@ -175,5 +175,38 @@ namespace RobotDreams.API.Controllers
         {
             memCache.Set($"robotdreams.user.roles.{userId}", JsonConvert.SerializeObject(userRoles), DateTime.Now.AddSeconds(35));
         }
+
+        [HttpPost]
+        [Route("createUserAddress")]
+        public IActionResult CreateUserAddress([FromQuery] Guid? userId, [FromBody] CreateUserAddressModel model)
+        {
+            if (string.IsNullOrEmpty(model.AddressName)
+                || string.IsNullOrEmpty(model.Address)
+                || string.IsNullOrEmpty(model.PhoneNumber)
+                || string.IsNullOrEmpty(model.City)
+                || string.IsNullOrEmpty(model.District)
+                || string.IsNullOrEmpty(model.Creator) || userId == null || userId == Guid.Empty)
+                return BadRequest("Bazı bilgiler boş olamaz.");
+
+            UserAddress userAddress = new()
+            {
+                Email = model.Email,
+                AddressName = model.AddressName,
+                Address = model.Address,
+                UserId = userId.Value,
+                City = model.City,
+                District = model.District,
+                Creator = model.Creator,
+                PhoneNumber = model.PhoneNumber,
+                Name = model.Name,
+                Surname = model.Surname,
+                PostCode = model.PostCode
+            };
+
+            var result = dbContext.UserAddresses.Add(userAddress);
+            dbContext.SaveChanges();
+
+            return Ok(result.State == EntityState.Unchanged ? "Başarılı." : "Başarısız");
+        }
     }
 }

@@ -12,6 +12,6 @@ namespace RobotDreams.API.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
-
+        public DbSet<UserAddress> UserAddresses { get; set; }
     }
 }
