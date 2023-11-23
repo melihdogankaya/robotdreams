@@ -208,5 +208,57 @@ namespace RobotDreams.API.Controllers
 
             return Ok(result.State == EntityState.Unchanged ? "Başarılı." : "Başarısız");
         }
+
+        [HttpGet]
+        [Route("getUserAddress")]
+        public IActionResult GetUserAddresses([FromQuery] Guid? userId)
+        {
+            if (userId == null || userId == Guid.Empty)
+                return BadRequest("UserId boş olamaz.");
+
+            //OrderBy LINQ
+            //var result = from userAddresses in dbContext.UserAddresses
+            //             where userAddresses.UserId == userId
+            //             orderby userAddresses.Created descending
+            //             select userAddresses;
+            //
+
+            //Inner Join LINQ
+            //var result = from user in dbContext.Users
+            //             join userRole in dbContext.UserRoles on user.Id equals userRole.UserId
+            //             select new
+            //             {
+            //                 user.Id,
+            //                 user.Name,
+            //                 user.Surname,
+            //                 user.Email,
+            //                 userRole.Role
+            //             };
+
+            //Left Join LINQ
+            //var result = from user in dbContext.Users
+            //             join userRole in dbContext.UserRoles on user.Id equals userRole.UserId into t
+            //             from nt in t.DefaultIfEmpty()
+            //             //from userRole in dbContext.UserRoles.Where(p => p.UserId == userId).DefaultIfEmpty()                    
+            //             select new
+            //             {
+            //                 user.Id,
+            //                 user.Name,
+            //                 user.Surname,
+            //                 user.Email,
+            //                 nt.Role
+            //             };
+
+            //Inner Join Strong Typed
+            //var result = dbContext.UserAddresses.Where(p => p.UserId == userId).Include(p => p.User);
+
+            //OrderBy Strong Typed
+            //var result = dbContext.UserAddresses.Where(p => p.UserId == userId).OrderByDescending(p => p.Created);
+
+            //Left Join Strong Typed
+            var result = dbContext.UserRoles.Include(p => p.User).Select(p => new { p.Id, p.User.Name, p.User.Surname, p.User.Email, p.Role});
+
+            return Ok(result);
+        }
     }
 }
