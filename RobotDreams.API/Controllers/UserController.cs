@@ -1,4 +1,5 @@
-﻿using Elasticsearch.Net.Specification.WatcherApi;
+﻿using Dapper;
+using Elasticsearch.Net.Specification.WatcherApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -13,6 +14,7 @@ using RobotDreams.API.Model.DLinqAttribute;
 using RobotDreams.API.Model.EntityFrameworkExample;
 using RobotDreams.API.Model.Interface;
 using RobotDreams.API.Model.SqlClient;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -299,7 +301,7 @@ namespace RobotDreams.API.Controllers
 
         [HttpPatch]
         [Route("userPassword")]
-        public IActionResult UpdateUserPassword([FromBody]UpdateUserModel model)
+        public IActionResult UpdateUserPassword([FromBody] UpdateUserModel model)
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 return BadRequest("Email veya Parola boş olamaz.");
@@ -310,7 +312,7 @@ namespace RobotDreams.API.Controllers
 
             var result = sqlCommand.ExecuteNonQuery();
 
-            if(result > 0)
+            if (result > 0)
             {
                 return Ok("Kullanıcı şifresi güncellendi.");
             }
@@ -343,18 +345,41 @@ namespace RobotDreams.API.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("getUserWithEntityFrameworkRawCommand")]
-        //public IActionResult GetUserEntityFrameworkRawCommand()
-        //{
-        //    try
-        //    {
-        //        return Ok(JsonConvert.SerializeObject(dbContext.Users.FromSql<SqlClientUserModel>("SELECT [Id],[Name],[Surname],[Email],[PhoneNumber] FROM [dbo].[Users]").ToList()));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest($"{ex.Message}");
-        //    }
-        //}
+        [HttpGet]
+        [Route("getUserWithDapper")]
+        public IActionResult GetUserWithDapper()
+        {
+            var sqlText = @"SELECT [Id],[Name],[Surname],[Email],[PhoneNumber] FROM [dbo].[Users]";
+
+            sqlConnection.Open();
+            var users = sqlConnection.Query<SqlClientUserModel>(sqlText);
+
+            return Ok(JsonConvert.SerializeObject(users));
+        }
+
+        [HttpPatch]
+        [Route("userPasswordStoredProcedureDapper")]
+        public IActionResult UpdateUserPasswordStoredProcedureDapper([FromBody] UpdateUserModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest("Email veya Parola boş olamaz.");
+
+            DynamicParameters parameters = new();
+            parameters.Add("Email", model.Email, DbType.String);
+            parameters.Add("Password", model.Password, DbType.String);
+
+            sqlConnection.Open();
+
+            var result = sqlConnection.Execute("sp_update_user_password_by_email", parameters, null, null, CommandType.StoredProcedure);
+
+            if (result > 0)
+            {
+                return Ok("Kullanıcı şifresi güncellendi.");
+            }
+            else
+            {
+                return BadRequest("Kullanıcı şifresi güncellenemedi.");
+            }
+        }
     }
 }
