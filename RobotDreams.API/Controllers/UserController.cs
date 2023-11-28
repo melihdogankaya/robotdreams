@@ -1,6 +1,7 @@
 ﻿using Elasticsearch.Net.Specification.WatcherApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using RobotDreams.API.Helper;
 using RobotDreams.API.Model.DLinqAttribute;
 using RobotDreams.API.Model.EntityFrameworkExample;
 using RobotDreams.API.Model.Interface;
+using RobotDreams.API.Model.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -24,6 +26,7 @@ namespace RobotDreams.API.Controllers
         private readonly IConfiguration configuration;
         private readonly RobotDreamsDbContext dbContext;
         private readonly ICacheService cacheService;
+        private readonly SqlConnection sqlConnection;
 
         private readonly IMemoryCache memCache;
 
@@ -33,6 +36,7 @@ namespace RobotDreams.API.Controllers
             this.dbContext = dbContext;
             this.cacheService = cacheService;
             this.memCache = memCache;
+            sqlConnection = new SqlConnection(configuration["ConnectionStrings:DefaultConnection"]);
         }
 
         [HttpPost]
@@ -44,7 +48,7 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("Model cannot be null");
             }
 
-            if(string.IsNullOrEmpty(model.Email) && string.IsNullOrEmpty(model.Password))
+            if (string.IsNullOrEmpty(model.Email) && string.IsNullOrEmpty(model.Password))
             {
                 return BadRequest("Email and Password cannot be empty.");
             }
@@ -59,10 +63,10 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("PhoneNumber format doesn't correct.");
             }
 
-            dbContext.Users.Add(new Context.Domain.User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber});
+            dbContext.Users.Add(new Context.Domain.User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber });
             var result = dbContext.SaveChanges();
 
-            if(result <= 0)
+            if (result <= 0)
             {
                 return BadRequest("User cannot be created.");
             }
@@ -86,7 +90,7 @@ namespace RobotDreams.API.Controllers
 
             var findUser = dbContext.Users.FirstOrDefault(p => p.Email == model.Email && p.Password == model.Password);
 
-            if(findUser == null) 
+            if (findUser == null)
             {
                 return NotFound();
             }
@@ -132,7 +136,7 @@ namespace RobotDreams.API.Controllers
             response.TokenExpireDate = expireMinute;
             response.Authenticate = true;
             response.Token = tokenHandler.WriteToken(token);
-            
+
             return Ok(JsonConvert.SerializeObject(response));
         }
 
@@ -141,7 +145,7 @@ namespace RobotDreams.API.Controllers
         [Route("getUserRoles")]
         public async Task<IActionResult> GetUserRoles([FromQuery] Guid? userId)
         {
-            if(userId == null)
+            if (userId == null)
             {
                 return BadRequest("UserId cannot be null");
             }
@@ -150,14 +154,14 @@ namespace RobotDreams.API.Controllers
 
             var cacheForUserRole = memCache.TryGetValue($"robotdreams.user.roles.{userId}", out string? userRoles);
 
-            if(cacheForUserRole && !string.IsNullOrEmpty(userRoles))
+            if (cacheForUserRole && !string.IsNullOrEmpty(userRoles))
             {
                 return Ok(JsonConvert.DeserializeObject<IEnumerable<UserRoles>>(userRoles));
             }
 
             var userRolesFromDb = dbContext.UserRoles.Where(p => p.UserId == userId).Include(p => p.User).AsEnumerable();
 
-            if(userRolesFromDb == null)
+            if (userRolesFromDb == null)
             {
                 return BadRequest("User hasn't got any roles.");
             }
@@ -171,7 +175,7 @@ namespace RobotDreams.API.Controllers
         [Authorize]
         [HttpPost]
         [Route("setMemCache")]
-        public void SetCache([FromQuery]Guid userId, [FromBody]IEnumerable<UserRoles> userRoles)
+        public void SetCache([FromQuery] Guid userId, [FromBody] IEnumerable<UserRoles> userRoles)
         {
             memCache.Set($"robotdreams.user.roles.{userId}", JsonConvert.SerializeObject(userRoles), DateTime.Now.AddSeconds(35));
         }
@@ -256,9 +260,101 @@ namespace RobotDreams.API.Controllers
             //var result = dbContext.UserAddresses.Where(p => p.UserId == userId).OrderByDescending(p => p.Created);
 
             //Left Join Strong Typed
-            var result = dbContext.UserRoles.Include(p => p.User).Select(p => new { p.Id, p.User.Name, p.User.Surname, p.User.Email, p.Role});
+            var result = dbContext.UserRoles.Include(p => p.User).Select(p => new { p.Id, p.User.Name, p.User.Surname, p.User.Email, p.Role });
 
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("getUserWithSqlClient")]
+        public IActionResult GetUserWithSqlClient()
+        {
+            try
+            {
+                var resultModel = new List<SqlClientUserModel>();
+                var sqlText = @"SELECT [Id],[Name],[Surname],[Email],[PhoneNumber] FROM [dbo].[Users]";
+                var sqlCommand = new SqlCommand(sqlText, sqlConnection);
+                sqlConnection.Open();
+
+                var result = sqlCommand.ExecuteReader();
+                while (result.Read())
+                {
+                    resultModel.Add(new SqlClientUserModel
+                    {
+                        Id = Guid.Parse(result[0].ToString()),
+                        Name = result[1].ToString(),
+                        Surname = result[2].ToString(),
+                        Email = result[3].ToString(),
+                        PhoneNumber = result[4].ToString(),
+                    });
+                }
+
+                return Ok(JsonConvert.SerializeObject(resultModel));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
+
+        [HttpPatch]
+        [Route("userPassword")]
+        public IActionResult UpdateUserPassword([FromBody]UpdateUserModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest("Email veya Parola boş olamaz.");
+
+            var sqlText = @$"UPDATE [dbo].[Users] SET [Password] = '{model.Password}' WHERE Email = '{model.Email}'";
+            var sqlCommand = new SqlCommand(sqlText, sqlConnection);
+            sqlConnection.Open();
+
+            var result = sqlCommand.ExecuteNonQuery();
+
+            if(result > 0)
+            {
+                return Ok("Kullanıcı şifresi güncellendi.");
+            }
+            else
+            {
+                return BadRequest("Kullanıcı şifresi güncellenemedi.");
+            }
+        }
+
+        [HttpPatch]
+        [Route("userPasswordStoredProcedure")]
+        public IActionResult UpdateUserPasswordStoredProcedure([FromBody] UpdateUserModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+                return BadRequest("Email veya Parola boş olamaz.");
+
+            var sqlText = @$"EXEC [dbo].[sp_update_user_password_by_email] @Email = '{model.Email}', @Password = '{model.Password}'";
+            var sqlCommand = new SqlCommand(sqlText, sqlConnection);
+            sqlConnection.Open();
+
+            var result = sqlCommand.ExecuteNonQuery();
+
+            if (result > 0)
+            {
+                return Ok("Kullanıcı şifresi güncellendi.");
+            }
+            else
+            {
+                return BadRequest("Kullanıcı şifresi güncellenemedi.");
+            }
+        }
+
+        //[HttpGet]
+        //[Route("getUserWithEntityFrameworkRawCommand")]
+        //public IActionResult GetUserEntityFrameworkRawCommand()
+        //{
+        //    try
+        //    {
+        //        return Ok(JsonConvert.SerializeObject(dbContext.Users.FromSql<SqlClientUserModel>("SELECT [Id],[Name],[Surname],[Email],[PhoneNumber] FROM [dbo].[Users]").ToList()));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"{ex.Message}");
+        //    }
+        //}
     }
 }
