@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure;
+using Dapper;
 using Elasticsearch.Net.Specification.WatcherApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,7 @@ namespace RobotDreams.API.Controllers
                 return BadRequest("PhoneNumber format doesn't correct.");
             }
 
-            dbContext.Users.Add(new Context.Domain.User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = model.Password, Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber });
+            dbContext.Users.Add(new Context.Domain.User { Name = model.Name, Surname = model.Surname, Email = model.Email, Password = Crypto.EncryptPassword(model.Password), Id = Guid.NewGuid(), PhoneNumber = model.PhoneNumber });
             var result = dbContext.SaveChanges();
 
             if (result <= 0)
@@ -90,16 +91,25 @@ namespace RobotDreams.API.Controllers
 
             var response = new UserModel();
 
-            var findUser = dbContext.Users.FirstOrDefault(p => p.Email == model.Email && p.Password == model.Password);
+            var findUser = dbContext.Users.FirstOrDefault(p => p.Email == model.Email && p.Password == Crypto.EncryptPassword(model.Password));
 
             if (findUser == null)
             {
                 return NotFound();
             }
 
+            var cacheForUserToken = cacheService.GetValueAsync($"robotdreams.user.token.{findUser.Id}").Result;
+
+            if (!string.IsNullOrEmpty(cacheForUserToken))
+            {
+                response.Token = cacheForUserToken;
+                response.Authenticate = true;
+                return Ok(JsonConvert.SerializeObject(response));
+            }
+
             var userRoles = dbContext.UserRoles.Where(p => p.UserId == findUser.Id).Include(c => c.User).AsEnumerable();
 
-            var expirationInMinutes = TimeSpan.FromMinutes(10);
+            var expirationInMinutes = TimeSpan.FromMinutes(20);
             var expireMinute = DateTime.Now.AddMinutes(expirationInMinutes.Minutes);
 
             var claims = new List<Claim> {
@@ -138,6 +148,8 @@ namespace RobotDreams.API.Controllers
             response.TokenExpireDate = expireMinute;
             response.Authenticate = true;
             response.Token = tokenHandler.WriteToken(token);
+
+            cacheService.SetValueAsync($"robotdreams.user.token.{findUser.Id}", response.Token);
 
             return Ok(JsonConvert.SerializeObject(response));
         }
@@ -215,13 +227,11 @@ namespace RobotDreams.API.Controllers
             return Ok(result.State == EntityState.Unchanged ? "Başarılı." : "Başarısız");
         }
 
+        [Authorize]
         [HttpGet]
         [Route("getUserAddress")]
-        public IActionResult GetUserAddresses([FromQuery] Guid? userId)
+        public IActionResult GetUserAddresses()
         {
-            if (userId == null || userId == Guid.Empty)
-                return BadRequest("UserId boş olamaz.");
-
             //OrderBy LINQ
             //var result = from userAddresses in dbContext.UserAddresses
             //             where userAddresses.UserId == userId
@@ -255,16 +265,38 @@ namespace RobotDreams.API.Controllers
             //                 nt.Role
             //             };
 
-            //Inner Join Strong Typed
-            //var result = dbContext.UserAddresses.Where(p => p.UserId == userId).Include(p => p.User);
-
             //OrderBy Strong Typed
             //var result = dbContext.UserAddresses.Where(p => p.UserId == userId).OrderByDescending(p => p.Created);
 
             //Left Join Strong Typed
-            var result = dbContext.UserRoles.Include(p => p.User).Select(p => new { p.Id, p.User.Name, p.User.Surname, p.User.Email, p.Role });
+            //var result = dbContext.UserRoles.Include(p => p.User).Select(p => new { p.Id, p.User.Name, p.User.Surname, p.User.Email, p.Role });
 
-            return Ok(result);
+            var requestHeaders = Request.Headers;
+            var authorization = requestHeaders.Authorization;
+            var token = authorization.First().Replace("Bearer ", "");
+            
+            var handler = new JwtSecurityTokenHandler();
+            var decodeToken = handler.ReadJwtToken(token);
+
+            var findUserId = decodeToken.Claims.First(claim => claim.Type == "UserId").Value;
+
+            var isUserIdCorrect = Guid.TryParse(findUserId, out Guid userId);
+
+            if (!isUserIdCorrect)
+                return BadRequest("UserId geçerli değil.");
+
+            var cacheForUserAdresses = cacheService.GetValueAsync($"robotdreams.user.addresses.{userId}").Result;
+
+            if (!string.IsNullOrEmpty(cacheForUserAdresses))
+            {
+                return Ok(JsonConvert.DeserializeObject<List<UserAddress>>(cacheForUserAdresses));
+            }
+
+            var result = dbContext.UserAddresses.Where(p => p.UserId == userId).Include(p => p.User).ToList();
+
+            cacheService.SetValueAsync($"robotdreams.user.addresses.{userId}", JsonConvert.SerializeObject(result));
+
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet]

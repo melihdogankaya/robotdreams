@@ -8,7 +8,7 @@ namespace RobotDreams.API.Helper
     {
         private readonly IConnectionMultiplexer _redisCon;
         private readonly IDatabase _cache;
-        private TimeSpan ExpireTime => TimeSpan.FromMinutes(1);
+        private TimeSpan ExpireTime => TimeSpan.FromMinutes(20);
 
         public RedisCacheService(IConnectionMultiplexer redisCon)
         {
