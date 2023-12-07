@@ -23,7 +23,7 @@ namespace RobotDreams.API.Controllers
                                                        new CultureInfo("ja-JP")
             };
 
-            var now = new DateTime(2009, 5, 1, 9, 0, 0);
+            var now = new DateTime(2009,5,1,9,0,0);
 
             foreach (var cultureInfo in culture)
             {
@@ -50,7 +50,7 @@ namespace RobotDreams.API.Controllers
             List<string> result = new();
 
             var date = DateTime.Now; //new DateTime(2008, 6, 15, 19, 18, 05);
-            string[] standardFmts = { "d", "D", "f", "F", "g", "G", "m", "o", "R", "s", "t", "T", "u", "U", "y" };
+            string[] standardFmts = { "d", "D", "f", "F", "g", "G", "m", "o", "R", "s", "t", "T", "u", "U", "y"};
 
             foreach (var item in standardFmts)
             {

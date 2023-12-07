@@ -1,26 +1,52 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RobotDreams.API.Context;
-using RobotDreams.API.Model;
+using RobotDreams.API.Helper;
+using RobotDreams.API.Model.Interface;
 using RobotDreams.API.Model.Settings;
+using Serilog;
+using StackExchange.Redis;
+using System.Globalization;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
+IHostEnvironment environment = builder.Environment;
+builder.Configuration.Sources.Clear();
 
-// Add services to the container.
+#region Localizer
+builder.Services.AddSingleton<LanguageService>();
+builder.Services.AddLocalization(o => o.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(o => 
+{
+    var supportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("tr-TR") };
+    o.DefaultRequestCulture = new RequestCulture(culture: "tr-TR", uiCulture: "tr-TR");
+    o.SupportedCultures = supportedCultures;
+    o.SupportedUICultures = supportedCultures;
+    o.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+});
+#endregion
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Configuration.AddEnvironmentVariables("appsettings.json");
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration["Redis"]);
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
+//ConfigureLogger.ConfigureLogging(builder.Configuration);
+//builder.Host.UseSerilog();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<RobotDreamsDbContext>(options => options.UseSqlServer(connection));
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Melih's API", Version = "v1" });
@@ -52,7 +78,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,7 +102,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.Configure<JwtSecurityTokenSettings>
         (builder.Configuration.GetSection("JwtSecurityToken"));
 
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -86,26 +114,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-var resp = "<html><b>You don't have access to this method. Forbidden</b></html>";
-
-//app.UseStatusCodePages(Text.Plain, $"");
-app.UseStatusCodePages(Text.Html, resp);
-//app.UseExceptionHandler(exceptionHandlerApp =>
-//{
-//    exceptionHandlerApp.Run(async context =>
-//    {
-//        if (context.Response.StatusCode == StatusCodes.Status403Forbidden) {
-//            context.Response.ContentType = Text.Plain;
-//            await context.Response.WriteAsync("You don't have access this method");
-//        }      
-//    });
-//});
-
 app.UseHttpsRedirection();
+app.UseRequestLocalization(app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value);
+
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowAll");
+
 
 app.Run();

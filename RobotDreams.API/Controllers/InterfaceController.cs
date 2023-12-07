@@ -11,7 +11,7 @@ namespace RobotDreams.API.Controllers
         [Route("example1")]
         public IActionResult InterfaceExample()
         {
-            Player player = new() { Name = "Lucifer", Age = 30, Weapon = new M51() };
+            Player player = new() { Name = "Lucifer", Age = 30, Weapon = new M51()};
             return Ok(player.TakeAim());
         }
     }

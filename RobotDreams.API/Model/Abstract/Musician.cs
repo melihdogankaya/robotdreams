@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string HowtoPlay { get; set; }
+        public string HowToPlay { get; set; }
         public Instrument Instrument { get; set; }
     }
 }

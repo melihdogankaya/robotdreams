@@ -97,7 +97,7 @@ namespace RobotDreams.API.Controllers
                 result.Add(x);
                 x++;
             } while (x < 20);
-
+            
 
             while (y < 20)
             {
@@ -119,7 +119,7 @@ namespace RobotDreams.API.Controllers
             List<int> result = new();
             for (int i = 1; i <= 10; i++)
             {
-                if (i == 5)
+                if(i == 5)
                 {
                     break;
                 }

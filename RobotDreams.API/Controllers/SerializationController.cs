@@ -34,7 +34,6 @@ namespace RobotDreams.API.Controllers
                 BaseAddress = new Uri("https://jsonplaceholder.typicode.com")
             };
 
-
             var response = await client.GetAsync("users/1");
             var s = await response.Content.ReadAsStringAsync();
 

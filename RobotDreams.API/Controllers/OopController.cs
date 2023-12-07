@@ -54,7 +54,6 @@ namespace RobotDreams.API.Controllers
         {
             Basket _basket = new();
             
-
             Bread _bread = new("Uno", 35, "Tam Buğday", 500);
             MobilePhone _mobilePhone = new("iPhone", 50000, "Apple");
 
@@ -67,7 +66,5 @@ namespace RobotDreams.API.Controllers
 
             return Ok(basketSerialized);
         }
-
-        
     }
 }

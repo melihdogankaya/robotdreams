@@ -22,7 +22,7 @@ namespace RobotDreams.API.Controllers
                 var c = arr[arr.Length + 1];
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -34,11 +34,11 @@ namespace RobotDreams.API.Controllers
         {
             try
             {
-                //object o = null;
-                //var b = o.ToString();
+                object o = null;
+                var b = o.ToString();
                 return Ok();
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -53,7 +53,7 @@ namespace RobotDreams.API.Controllers
                 List<int> values = new();
                 return Ok();
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -119,7 +119,8 @@ namespace RobotDreams.API.Controllers
             {
                 string exMessage = $"Exception: {ex.Message} StackTrace: {ex.StackTrace}";
                 return BadRequest(exMessage);
-            }
+            }         
         }
     }
 }
+

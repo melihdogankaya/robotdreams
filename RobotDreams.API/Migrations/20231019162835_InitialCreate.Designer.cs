@@ -12,8 +12,8 @@ using RobotDreams.API.Context;
 namespace RobotDreams.API.Migrations
 {
     [DbContext(typeof(RobotDreamsDbContext))]
-    [Migration("20231022212345_baglan")]
-    partial class baglan
+    [Migration("20231019162835_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,10 +44,6 @@ namespace RobotDreams.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
